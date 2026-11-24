@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | AMAKART</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;color:#222;background:#fff}
+a{text-decoration:none;color:inherit}
+.announcement{background:#111;color:white;text-align:center;padding:10px;font-size:12px;letter-spacing:1px}
+header{height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #eee;background:white}
+.logo{font-size:27px;font-weight:900;letter-spacing:2px}
+.header-icons{font-size:22px}
+.cart-count{font-size:11px;background:#111;color:white;padding:3px 6px;border-radius:50%;vertical-align:top}
+.page-title{text-align:center;padding:45px 15px 25px}
+.page-title h1{font-size:30px;letter-spacing:1px}
+.page-title p{color:#888;font-size:13px;margin-top:10px}
+.breadcrumb{padding:15px 6%;font-size:13px;color:#777}
+.breadcrumb a{color:#222}
+.checkout-container{max-width:1200px;margin:25px auto 80px;padding:0 6%}
+.checkout-layout{display:grid;grid-template-columns:1.5fr 1fr;gap:45px;align-items:start}
+.section-heading{font-size:19px;margin-bottom:25px}
+.form-section{margin-bottom:35px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:bold;margin-bottom:9px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:14px;border:1px solid #ddd;outline:none;font-size:14px;font-family:Arial,sans-serif;background:white}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#111}
+.form-group textarea{height:100px;resize:vertical}
+.summary-box{border:1px solid #eee;padding:25px;position:sticky;top:20px}
+.summary-box h2{font-size:19px;margin-bottom:25px}
+.summary-item{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid #eee}
+.summary-item img{width:65px;height:75px;object-fit:cover;background:#f5f5f5}
+.summary-item-info{flex:1}
+.summary-item-info h3{font-size:13px;margin-bottom:7px}
+.summary-item-info p{font-size:12px;color:#888;margin-bottom:5px}
+.summary-item-price{font-size:13px;font-weight:bold;white-space:nowrap}
+.summary-row{display:flex;justify-content:space-between;margin-bottom:17px;font-size:14px;color:#777}
+.summary-total{border-top:1px solid #ddd;padding-top:20px;margin-top:20px;color:#222;font-weight:bold;font-size:17px}
+.payment-section{border:1px solid #e5e5e5;padding:22px;margin:10px 0 28px;background:#fafafa}
+.payment-section h2{font-size:19px;margin-bottom:10px}
+.payment-note{color:#666;font-size:13px;line-height:1.6;margin-bottom:17px}
+.upi-details{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;background:white;border:1px solid #e5e5e5;margin-bottom:14px;flex-wrap:wrap}
+.upi-id{font-size:14px;font-weight:bold;overflow-wrap:anywhere}
+.copy-btn,.upi-pay-btn{border:0;padding:11px 14px;cursor:pointer;font-size:12px;font-weight:bold}
+.copy-btn{background:#eee;color:#111}
+.upi-pay-btn{display:inline-block;background:#111;color:white;text-align:center;margin:0 0 16px}
+.payment-amount{display:flex;justify-content:space-between;gap:12px;font-size:15px;font-weight:bold;padding:13px 0;border-top:1px solid #e5e5e5;border-bottom:1px solid #e5e5e5;margin-bottom:17px}
+.payment-confirm{display:flex;align-items:flex-start;gap:9px;font-size:13px;line-height:1.5;margin:14px 0 0}
+.payment-confirm input{margin-top:2px}
+.policy-consent{border:1px solid #e5e5e5;padding:18px;margin:10px 0 22px;background:#fff}
+.policy-consent label{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;cursor:pointer}
+.policy-consent input{margin-top:4px;flex-shrink:0;width:16px;height:16px;accent-color:#111}
+.policy-consent a{font-weight:bold;text-decoration:underline;color:#111}
+.policy-required-note{font-size:12px;color:#888;margin-top:8px;line-height:1.5}
+.payment-status-note{color:#8a5a00;font-size:12px;line-height:1.5;margin-top:12px}
+.place-order-btn{width:100%;padding:17px;background:#111;color:white;border:none;font-size:13px;font-weight:bold;letter-spacing:1px;cursor:pointer;margin-top:20px}
+.place-order-btn:hover{background:#444}
+.place-order-btn:disabled{opacity:.6;cursor:not-allowed}
+.back-cart{display:inline-block;margin-top:20px;font-size:13px;border-bottom:1px solid #222;padding-bottom:5px}
+.empty-cart{text-align:center;padding:60px 15px}
+.empty-cart h2{margin-bottom:12px}
+.empty-cart p{color:#888}
+.shop-btn{display:inline-block;margin-top:25px;background:#111;color:white;padding:14px 25px;font-size:12px}
+footer{background:#111;color:white;padding:45px 6% 20px}
+.footer-content{display:grid;grid-template-columns:2fr 1fr 1fr;gap:35px}
+.footer-logo{font-size:25px;font-weight:900;margin-bottom:15px}
+footer p{color:#aaa;font-size:13px;line-height:1.8}
+footer h3{margin-bottom:15px;font-size:15px}
+footer a{display:block;color:#aaa;font-size:13px;margin-bottom:12px}
+.footer-bottom{border-top:1px solid #333;margin-top:35px;padding-top:20px;text-align:center;font-size:12px;color:#888}
+.order-details-section,.addons-section{border:1px solid #e5e5e5;padding:22px;margin:10px 0 28px;background:#fff}
+.order-details-section h2,.addons-section h2{font-size:19px;margin-bottom:18px}
+.addons-section{background:#fafafa}
+.addons-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 14px}
+.addon-option{display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer}
+.addon-option input{width:17px;height:17px;accent-color:#111}
+.shipping-fixed{color:#222;font-weight:600}
+.checkout-error{display:none;padding:13px;margin:15px 0;background:#fff0ef;border:1px solid #ffd1cc;color:#9f2118;font-size:13px;line-height:1.5}
+@media(max-width:800px){
+.checkout-layout{grid-template-columns:1fr;gap:30px}
+.summary-box{position:static}
+}
+@media(max-width:550px){
+header{height:65px;padding:0 5%}
+.logo{font-size:22px}
+.checkout-container{padding:0 5%}
+.page-title h1{font-size:25px}
+.form-row{grid-template-columns:1fr;gap:0}
+.footer-content{grid-template-columns:1fr 1fr}
+.footer-about{grid-column:1/-1}
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">FREE SHIPPING ON SELECTED ORDERS</div>
+
+<header>
+    <a href="index.html" class="logo">AMAKART</a>
+    <div class="header-icons">
+        <a href="cart.html">🛒<span class="cart-count" id="cartCount">0</span></a>
+    </div>
+</header>
+
+<section class="page-title">
+    <h1>ORDER DETAILS</h1>
+    <p>Enter your delivery details and complete your order</p>
+</section>
+
+<div class="breadcrumb">
+    <a href="index.html">Home</a> /
+    <a href="cart.html">Cart</a> /
+    Checkout
+</div>
+
+<section class="checkout-container">
+
+<div id="checkoutContent">
+<div class="checkout-layout">
+
+<div>
+<form id="checkoutForm">
+
+    <div class="form-section">
+        <h2 class="section-heading">Contact Information</h2>
+
+        <div class="form-group">
+            <label for="customerName">Full Name *</label>
+            <input type="text" id="customerName" name="customerName"
+                   placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="phone">Mobile Number *</label>
+                <input type="tel" id="phone" name="phone"
+                       placeholder="10 digit mobile number"
+                       pattern="[6-9][0-9]{9}" maxlength="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email"
+                       placeholder="Enter your email">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h2 class="section-heading">Delivery Address</h2>
+
+        <div class="form-group">
+            <label for="address">House / Building / Street *</label>
+            <textarea id="address" name="address"
+                      placeholder="Enter your complete address" required></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="city">City / Town *</label>
+                <input type="text" id="city" name="city"
+                       placeholder="City or town" required>
+            </div>
+
+            <div class="form-group">
+                <label for="district">District *</label>
+                <input type="text" id="district" name="district"
+                       placeholder="District" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="state">State *</label>
+                <select id="state" name="state" required>
+                    <option value="">Select State</option>
+                    <option>Kerala</option>
+                    <option>Tamil Nadu</option>
+                    <option>Karnataka</option>
+                    <option>Andhra Pradesh</option>
+                    <option>Telangana</option>
+                    <option>Maharashtra</option>
+                    <option>Goa</option>
+                    <option>Delhi</option>
+                    <option>Gujarat</option>
+                    <option>Rajasthan</option>
+                    <option>Uttar Pradesh</option>
+                    <option>Madhya Pradesh</option>
+                    <option>West Bengal</option>
+                    <option>Punjab</option>
+                    <option>Haryana</option>
+                    <option>Odisha</option>
+                    <option>Bihar</option>
+                    <option>Assam</option>
+                    <option>Jharkhand</option>
+                    <option>Chhattisgarh</option>
+                    <option>Himachal Pradesh</option>
+                    <option>Uttarakhand</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pincode">PIN Code *</label>
+                <input type="text" id="pincode" name="pincode"
+                       placeholder="6 digit PIN code"
+                       pattern="[0-9]{6}" maxlength="6" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="landmark">Landmark (Optional)</label>
+            <input type="text" id="landmark" name="landmark"
+                   placeholder="Nearby landmark">
+        </div>
+    </div>
+
+    <div class="order-details-section">
+        <h2>Order Details</h2>
+        <div class="form-group" style="margin-bottom:0;">
+            <label for="orderNumber">AMAKART Order Number</label>
+            <input type="text" id="orderNumber" name="orderNumber" readonly>
+            <p class="policy-required-note">This order number is generated automatically by AMAKART.</p>
+        </div>
+    </div>
+
+    <div class="addons-section">
+        <h2>Order Add-ons</h2>
+        <div class="addons-grid">
+            <label class="addon-option">
+                <input type="checkbox" name="addons" value="Gift Wrap" data-price="55">
+                <span>Gift Wrap <strong>+ ₹55</strong></span>
+            </label>
+
+            <label class="addon-option">
+                <input type="checkbox" name="addons" value="Rush Order" data-price="95">
+                <span>Rush Order <strong>+ ₹95</strong></span>
+            </label>
+
+            <label class="addon-option">
+                <input type="checkbox" name="addons" value="Box Packing" data-price="35">
+                <span>Box Packing <strong>+ ₹35</strong></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="policy-consent">
+        <label for="refundPolicyAccepted">
+            <input type="checkbox" id="refundPolicyAccepted" name="refundPolicyAccepted" required>
+            <span>I have read and agree to the <a href="refund.html" target="_blank" rel="noopener">Refund &amp; Return Policy</a>. *</span>
+        </label>
+        <p class="policy-required-note">
+            You must accept the Refund &amp; Return Policy before proceeding with payment and placing your order.
+        </p>
+    </div>
+
+    <div class="payment-section">
+        <h2>Payment Details</h2>
+        <p class="payment-note">
+            Send the exact total amount to the UPI ID below using Google Pay,
+            PhonePe, Paytm or any UPI app. After payment, enter your UTR /
+            transaction ID and place your order.
+        </p>
+
+        <div class="upi-details">
+            <span class="upi-id" id="upiId">ahmadbinabdulla786-1@oksbi</span>
+            <button type="button" class="copy-btn" id="copyUpiBtn">COPY UPI ID</button>
+        </div>
+
+        <div class="payment-amount">
+            <span>Amount to Pay</span>
+            <span id="upiAmount">₹0</span>
+        </div>
+
+        <a href="#" class="upi-pay-btn" id="upiPayBtn">PAY USING UPI APP</a>
+
+        <div class="form-group">
+            <label for="transactionId">UPI Transaction ID / UTR *</label>
+            <input type="text" id="transactionId" name="transactionId"
+                   placeholder="Enter your UTR / transaction reference"
+                   minlength="6" maxlength="30" required>
+        </div>
+
+        <label class="payment-confirm">
+            <input type="checkbox" id="paymentConfirmation" required>
+            <span>I have completed the UPI payment for the exact amount shown above.</span>
+        </label>
+
+        <p class="payment-status-note">
+            Your order will remain pending until the payment is manually verified.
+            Please do not submit the order before making the payment.
+        </p>
+    </div>
+
+    <div class="checkout-error" id="checkoutError" role="alert"></div>
+
+    <button type="submit" class="place-order-btn" id="placeOrderBtn">
+        PAY & PROCEED
+    </button>
+
+</form>
+
+<a href="cart.html" class="back-cart">← BACK TO CART</a>
+</div>
+
+<div class="summary-box">
+    <h2>Your Order</h2>
+    <div id="checkoutItems"></div>
+
+    <div class="summary-row" style="margin-top:20px;">
+        <span>Products Total</span>
+        <span id="subtotal">₹0</span>
+    </div>
+
+    <div class="summary-row">
+        <span>Add-ons</span>
+        <span id="addonsTotal">₹0</span>
+    </div>
+
+    <div class="summary-row">
+        <span>Shipping</span>
+        <span id="shipping" class="shipping-fixed">₹120</span>
+    </div>
+
+    <div class="summary-row summary-total">
+        <span>Grand Total</span>
+        <span id="total">₹0</span>
+    </div>
+</div>
+
+</div>
+</div>
+
+<div class="empty-cart" id="emptyCart" style="display:none;">
+    <h2>Your Cart is Empty</h2>
+    <p>Please add products before proceeding to checkout.</p>
+    <a href="index.html" class="shop-btn">START SHOPPING</a>
+</div>
+
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-about">
+            <div class="footer-logo">AMAKART</div>
+            <p>Your style, your memories, your choice.</p>
+        </div>
+
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="tshirt.html">T-Shirts</a>
+            <a href="hoodie.html">Hoodies</a>
+            <a href="jacket.html">Jackets</a>
+            <a href="cap.html">Caps</a>
+            <a href="frame.html">Photo Frames</a>
+        </div>
+
+        <div>
+            <h3>Customer Service</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="orders.html">My Orders</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="refund.html">Refund Policy</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 AMAKART. All Rights Reserved.
+    </div>
+</footer>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCEaA53b9MszdFAl-KoU3_DDJXejIjQ4k",
+    authDomain: "amakart-4a249.firebaseapp.com",
+    projectId: "amakart-4a249",
+    storageBucket: "amakart-4a249.firebasestorage.app",
+    messagingSenderId: "399156555540",
+    appId: "1:399156555540:web:a03bc77ab75402cb52dc01",
+    measurementId: "G-HKTQ1JVF82"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+/* COMMON FUNCTIONS */
+
+function getCart() {
+    try {
+        return JSON.parse(localStorage.getItem("amakartCart")) || [];
+    } catch {
+        return [];
+    }
+}
+
+function formatPrice(price) {
+    return "₹" + Number(price || 0).toLocaleString("en-IN");
+}
+
+function updateCartCount() {
+    const cart = getCart();
+
+    const count = cart.reduce((sum, item) => {
+        return sum + Number(item.quantity || 1);
+    }, 0);
+
+    document.getElementById("cartCount").textContent = count;
+}
+
+function getSelectedAddons() {
+    return Array.from(
+        document.querySelectorAll('input[name="addons"]:checked')
+    ).map(input => ({
+        name: input.value,
+        price: Number(input.dataset.price || 0)
+    }));
+}
+
+function showError(message) {
+    const box = document.getElementById("checkoutError");
+    box.textContent = message;
+    box.style.display = "block";
+}
+
+function clearError() {
+    const box = document.getElementById("checkoutError");
+    box.textContent = "";
+    box.style.display = "none";
+}
+
+
+/* AUTOMATIC AMAKART ORDER NUMBER */
+function generateOrderNumber() {
+    const timestamp = Date.now().toString();
+    const randomPart = Math.floor(1000 + Math.random() * 9000);
+    return "AMA" + timestamp + randomPart;
+}
+
+const generatedOrderNumber = generateOrderNumber();
+document.getElementById("orderNumber").value = generatedOrderNumber;
+
+/* ORDER TOTAL */
+
+function calculateTotals() {
+    const cart = getCart();
+
+    const subtotal = cart.reduce((sum, item) => {
+        return sum + Number(item.price || 0) * Number(item.quantity || 1);
+    }, 0);
+
+    const shippingCharge = 120;
+
+    const addonsTotal = getSelectedAddons().reduce(
+        (sum, addon) => sum + addon.price,
+        0
+    );
+
+    return {
+        subtotal,
+        shippingCharge,
+        addonsTotal,
+        grandTotal: subtotal + shippingCharge + addonsTotal
+    };
+}
+
+
+/* RENDER CHECKOUT */
+
+function renderCheckout() {
+
+    const cart = getCart();
+
+    const checkoutContent = document.getElementById("checkoutContent");
+    const emptyCart = document.getElementById("emptyCart");
+    const checkoutItems = document.getElementById("checkoutItems");
+
+    updateCartCount();
+
+    if (!cart.length) {
+        checkoutContent.style.display = "none";
+        emptyCart.style.display = "block";
+        return;
+    }
+
+    checkoutContent.style.display = "block";
+    emptyCart.style.display = "none";
+
+    checkoutItems.innerHTML = "";
+
+    cart.forEach(item => {
+
+        const price = Number(item.price) || 0;
+        const quantity = Number(item.quantity) || 1;
+
+        const details = [];
+
+        if (item.size) details.push("Size: " + item.size);
+        if (item.color) details.push("Colour: " + item.color);
+
+        const product = document.createElement("div");
+        product.className = "summary-item";
+
+        const image = document.createElement("img");
+        image.src = item.image || "";
+        image.alt = item.name || "Product";
+
+        const info = document.createElement("div");
+        info.className = "summary-item-info";
+
+        const name = document.createElement("h3");
+        name.textContent = item.name || "Product";
+
+        const quantityText = document.createElement("p");
+        quantityText.textContent = "Quantity: " + quantity;
+
+        info.appendChild(name);
+        info.appendChild(quantityText);
+
+        if (details.length) {
+            const detailText = document.createElement("p");
+            detailText.textContent = details.join(" | ");
+            info.appendChild(detailText);
+        }
+
+        const amount = document.createElement("div");
+        amount.className = "summary-item-price";
+        amount.textContent = formatPrice(price * quantity);
+
+        product.appendChild(image);
+        product.appendChild(info);
+        product.appendChild(amount);
+
+        checkoutItems.appendChild(product);
+    });
+
+    const totals = calculateTotals();
+
+    document.getElementById("subtotal").textContent =
+        formatPrice(totals.subtotal);
+
+    document.getElementById("addonsTotal").textContent =
+        formatPrice(totals.addonsTotal);
+
+    document.getElementById("shipping").textContent =
+        formatPrice(totals.shippingCharge);
+
+    document.getElementById("total").textContent =
+        formatPrice(totals.grandTotal);
+
+    document.getElementById("upiAmount").textContent =
+        formatPrice(totals.grandTotal);
+
+    const upiId = "ahmadbinabdulla786-1@oksbi";
+
+    const upiLink = "upi://pay?pa=" + encodeURIComponent(upiId) +
+        "&pn=" + encodeURIComponent("AMAKART") +
+        "&am=" + encodeURIComponent(totals.grandTotal.toFixed(2)) +
+        "&cu=INR&tn=" + encodeURIComponent("AMAKART Order Payment");
+
+    document.getElementById("upiPayBtn").href = upiLink;
+}
+
+
+/* COPY UPI */
+
+document.getElementById("copyUpiBtn").addEventListener("click", async function() {
+
+    const upiId = document.getElementById("upiId").textContent.trim();
+
+    try {
+        await navigator.clipboard.writeText(upiId);
+        this.textContent = "COPIED";
+    } catch {
+        window.prompt("Copy this UPI ID:", upiId);
+    }
+});
+
+
+/* UPDATE TOTAL WHEN ADD-ONS CHANGE */
+
+document.querySelectorAll('input[name="addons"]').forEach(input => {
+    input.addEventListener("change", renderCheckout);
+});
+
+
+/* PLACE ORDER - SAVE TO FIRESTORE */
+
+let orderSubmitting = false;
+
+document.getElementById("checkoutForm").addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    if (orderSubmitting) return;
+
+    clearError();
+
+    const cart = getCart();
+
+    if (!cart.length) {
+        showError("Your cart is empty.");
+        return;
+    }
+
+    const customer = {
+        name: document.getElementById("customerName").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        district: document.getElementById("district").value.trim(),
+        state: document.getElementById("state").value,
+        pincode: document.getElementById("pincode").value.trim(),
+        landmark: document.getElementById("landmark").value.trim()
+    };
+
+    const transactionId =
+        document.getElementById("transactionId").value.trim();
+
+
+    if (!transactionId || transactionId.length < 6) {
+        showError("Please enter a valid UPI Transaction ID / UTR.");
+        return;
+    }
+
+    if (!document.getElementById("refundPolicyAccepted").checked) {
+        showError("Please read and accept the Refund & Return Policy before placing your order.");
+        document.getElementById("refundPolicyAccepted").focus();
+        return;
+    }
+
+    if (!document.getElementById("paymentConfirmation").checked) {
+        showError("Please confirm that you have completed the UPI payment.");
+        return;
+    }
+
+    const selectedAddons = getSelectedAddons();
+    const totals = calculateTotals();
+
+    const orderId = generatedOrderNumber;
+
+    /*
+       Keep the same structure expected by Admin Panel.
+       The document ID is generated by Firestore.
+    */
+
+    const order = {
+        orderId: orderId,
+        supplierOrderNumber: "",
+
+        addons: selectedAddons,
+        addonsTotal: totals.addonsTotal,
+
+        customer: customer,
+
+        items: cart.map(item => ({
+            productId: item.productId || item.id || "",
+            name: String(item.name || "Product"),
+            image: String(item.image || ""),
+            price: Number(item.price || 0),
+            quantity: Number(item.quantity || 1),
+            size: String(item.size || ""),
+            color: String(item.color || "")
+        })),
+
+        subtotal: totals.subtotal,
+        shipping: totals.shippingCharge,
+        total: totals.grandTotal,
+
+        paymentMethod: "UPI",
+        upiId: "ahmadbinabdulla786-1@oksbi",
+        transactionId: transactionId,
+
+        paymentStatus: "Verification Pending",
+        status: "Pending",
+
+        refundPolicyAccepted: true,
+        refundPolicyAcceptedAt: new Date().toISOString(),
+
+        createdAt: new Date().toISOString()
+    };
+
+    const submitButton = document.getElementById("placeOrderBtn");
+
+    orderSubmitting = true;
+    submitButton.disabled = true;
+    submitButton.textContent = "PLACING YOUR ORDER...";
+
+    try {
+
+        /*
+          FIRST: Save order to Firestore.
+          Do not clear cart unless Firestore confirms success.
+        */
+
+        const orderRef = await addDoc(
+            collection(db, "orders"),
+            order
+        );
+
+        /*
+          Store the Firestore document ID locally
+          for the confirmation page.
+        */
+
+        order.firestoreId = orderRef.id;
+
+        localStorage.setItem(
+            "amakartLatestOrder",
+            JSON.stringify(order)
+        );
+
+        /*
+          Keep a local copy for existing My Orders
+          page compatibility.
+        */
+
+        let localOrders = [];
+
+        try {
+            localOrders =
+                JSON.parse(localStorage.getItem("amakartOrders")) || [];
+        } catch {
+            localOrders = [];
+        }
+
+        localOrders.push(order);
+
+        localStorage.setItem(
+            "amakartOrders",
+            JSON.stringify(localOrders)
+        );
+
+        /*
+          Clear cart only after successful Firestore save.
+        */
+
+        localStorage.removeItem("amakartCart");
+
+        /*
+          Go to existing order confirmation page.
+        */
+
+        window.location.href = "order-success.html";
+
+    } catch (error) {
+
+        console.error("Firestore order save error:", error);
+
+        showError(
+            "Your order could not be submitted. " +
+            "Please try again. Error: " + error.message
+        );
+
+        orderSubmitting = false;
+        submitButton.disabled = false;
+        submitButton.textContent = "PAY & PROCEED";
+    }
+
+});
+
+
+/* INITIAL LOAD */
+
+renderCheckout();
+
+</script>
+
+</body>
+</html>

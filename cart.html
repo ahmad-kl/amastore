@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping Cart | AMAKART</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #222;
+    background: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.announcement {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+header {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    border-bottom: 1px solid #eee;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.menu-btn {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.header-icons {
+    font-size: 23px;
+}
+
+.cart-count {
+    font-size: 11px;
+    background: #111;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 50%;
+    vertical-align: top;
+}
+
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 200;
+    display: none;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 300px;
+    height: 100%;
+    background: white;
+    z-index: 201;
+    padding: 25px;
+    transition: .3s;
+    overflow-y: auto;
+}
+
+.drawer.active {
+    left: 0;
+}
+
+.drawer-overlay.active {
+    display: block;
+}
+
+.drawer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.drawer h3 {
+    font-size: 20px;
+}
+
+.close-btn {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.drawer a {
+    display: block;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+.page-title {
+    text-align: center;
+    padding: 55px 15px 35px;
+}
+
+.page-title h1 {
+    font-size: 32px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.page-title p {
+    font-size: 13px;
+    color: #888;
+}
+
+.breadcrumb {
+    padding: 15px 6%;
+    font-size: 13px;
+    color: #777;
+}
+
+.breadcrumb a {
+    color: #222;
+}
+
+.cart-container {
+    max-width: 1200px;
+    margin: 20px auto 80px;
+    padding: 0 6%;
+}
+
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.cart-heading {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 18px;
+    margin-bottom: 10px;
+}
+
+.cart-heading h2 {
+    font-size: 17px;
+}
+
+.cart-heading span {
+    color: #888;
+    font-size: 13px;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-image {
+    width: 110px;
+    height: 130px;
+    background: #f5f5f5;
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-info h3 {
+    font-size: 15px;
+    margin-bottom: 9px;
+}
+
+.item-info p {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.item-price {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    width: fit-content;
+    height: 34px;
+}
+
+.quantity-control button {
+    width: 32px;
+    height: 100%;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.quantity-control span {
+    width: 30px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.item-actions {
+    text-align: right;
+}
+
+.item-total {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.remove-btn {
+    border: none;
+    background: none;
+    color: #888;
+    text-decoration: underline;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.summary-box {
+    border: 1px solid #eee;
+    padding: 25px;
+}
+
+.summary-box h2 {
+    font-size: 19px;
+    margin-bottom: 25px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 17px;
+    font-size: 14px;
+    color: #777;
+}
+
+.summary-total {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 10px;
+    color: #222;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    background: #111;
+    color: white;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.checkout-btn:hover {
+    background: #444;
+}
+
+.continue-btn {
+    display: inline-block;
+    margin-top: 25px;
+    font-size: 13px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 5px;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 70px 15px;
+}
+
+.empty-cart .icon {
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+.empty-cart h2 {
+    font-size: 23px;
+    margin-bottom: 12px;
+}
+
+.empty-cart p {
+    color: #888;
+    font-size: 14px;
+}
+
+.shop-btn {
+    display: inline-block;
+    margin-top: 25px;
+    background: #111;
+    color: white;
+    padding: 15px 30px;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+footer {
+    background: #111;
+    color: white;
+    padding: 45px 6% 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 35px;
+}
+
+.footer-logo {
+    font-size: 25px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+footer p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+footer h3 {
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+footer a {
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    margin-top: 35px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+@media(max-width: 800px) {
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-box {
+        margin-top: 10px;
+    }
+}
+
+@media(max-width: 550px) {
+    header {
+        height: 65px;
+        padding: 0 5%;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .cart-container {
+        padding: 0 4%;
+    }
+
+    .page-title {
+        padding: 40px 15px 25px;
+    }
+
+    .page-title h1 {
+        font-size: 26px;
+    }
+
+    .cart-item {
+        grid-template-columns: 85px 1fr;
+        gap: 12px;
+    }
+
+    .item-image {
+        width: 85px;
+        height: 110px;
+    }
+
+    .item-actions {
+        grid-column: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+
+    .item-total {
+        margin: 0;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-about {
+        grid-column: 1 / -1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">
+    FREE SHIPPING ON SELECTED ORDERS
+</div>
+
+<header>
+    <div class="menu-btn" onclick="openMenu()">☰</div>
+
+    <a href="index.html" class="logo">AMAKART</a>
+
+    <div class="header-icons">
+        <a href="cart.html">🛒<span class="cart-count" id="cartCount">0</span></a>
+    </div>
+</header>
+
+<div class="drawer-overlay" id="overlay" onclick="closeMenu()"></div>
+
+<nav class="drawer" id="drawer">
+    <div class="drawer-top">
+        <h3>AMAKART</h3>
+        <span class="close-btn" onclick="closeMenu()">×</span>
+    </div>
+
+    <a href="index.html">Home</a>
+    <a href="tshirt.html">T-Shirts</a>
+    <a href="hoodie.html">Hoodies</a>
+    <a href="jacket.html">Jackets</a>
+    <a href="cap.html">Caps</a>
+    <a href="kids.html">Kids Clothing</a>
+    <a href="frame.html">Acrylic Photo Frames with Stand</a>
+    <a href="cart.html">My Cart</a>
+    <a href="orders.html">My Orders</a>
+</nav>
+
+<section class="page-title">
+    <h1>YOUR CART</h1>
+    <p>Review your selected products</p>
+</section>
+
+<div class="breadcrumb">
+    <a href="index.html">Home</a> / Shopping Cart
+</div>
+
+<section class="cart-container">
+
+    <div id="cartContent">
+
+        <div class="cart-layout">
+
+            <div class="cart-products">
+
+                <div class="cart-heading">
+                    <h2>Shopping Bag</h2>
+                    <span id="itemCount">0 Items</span>
+                </div>
+
+                <div id="cartItems"></div>
+
+                <a href="index.html" class="continue-btn">
+                    ← CONTINUE SHOPPING
+                </a>
+
+            </div>
+
+            <div class="summary-box">
+
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">₹0</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span id="shipping">Calculated at checkout</span>
+                </div>
+
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span id="total">₹0</span>
+                </div>
+
+                <button class="checkout-btn" onclick="goToCheckout()">
+                    PROCEED TO CHECKOUT →
+                </button>
+
+                <p style="font-size:11px;color:#999;text-align:center;margin-top:15px;line-height:1.6;">
+                    Shipping charges will be calculated during checkout.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="empty-cart" id="emptyCart" style="display:none;">
+
+        <div class="icon">🛒</div>
+
+        <h2>Your Cart is Empty</h2>
+
+        <p>You haven't added any products to your cart yet.</p>
+
+        <a href="index.html" class="shop-btn">START SHOPPING</a>
+
+    </div>
+
+</section>
+
+<footer>
+    <div class="footer-content">
+
+        <div class="footer-about">
+            <div class="footer-logo">AMAKART</div>
+            <p>Your style, your memories, your choice.</p>
+        </div>
+
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="tshirt.html">T-Shirts</a>
+            <a href="hoodie.html">Hoodies</a>
+            <a href="jacket.html">Jackets</a>
+            <a href="cap.html">Caps</a>
+            <a href="frame.html">Photo Frames</a>
+        </div>
+
+        <div>
+            <h3>Customer Service</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="orders.html">My Orders</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="refund.html">Refund Policy</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 AMAKART. All Rights Reserved.
+    </div>
+</footer>
+
+<script>
+
+// MENU
+function openMenu() {
+    document.getElementById("drawer").classList.add("active");
+    document.getElementById("overlay").classList.add("active");
+}
+
+function closeMenu() {
+    document.getElementById("drawer").classList.remove("active");
+    document.getElementById("overlay").classList.remove("active");
+}
+
+// GET CART
+function getCart() {
+    return JSON.parse(localStorage.getItem("amakartCart")) || [];
+}
+
+// SAVE CART
+function saveCart(cart) {
+    localStorage.setItem("amakartCart", JSON.stringify(cart));
+}
+
+// UPDATE CART BADGE
+function updateCartCount() {
+    const cart = getCart();
+
+    const total = cart.reduce((sum, item) => {
+        return sum + Number(item.quantity || 1);
+    }, 0);
+
+    document.getElementById("cartCount").textContent = total;
+}
+
+// FORMAT PRICE
+function formatPrice(price) {
+    return "₹" + Number(price).toLocaleString("en-IN");
+}
+
+// DISPLAY CART
+function renderCart() {
+
+    const cart = getCart();
+
+    const cartContent = document.getElementById("cartContent");
+    const emptyCart = document.getElementById("emptyCart");
+    const cartItems = document.getElementById("cartItems");
+
+    updateCartCount();
+
+    if (cart.length === 0) {
+        cartContent.style.display = "none";
+        emptyCart.style.display = "block";
+        return;
+    }
+
+    cartContent.style.display = "block";
+    emptyCart.style.display = "none";
+
+    cartItems.innerHTML = "";
+
+    let subtotal = 0;
+    let totalItems = 0;
+
+    cart.forEach((item, index) => {
+
+        const price = Number(item.price) || 0;
+        const quantity = Math.max(1, Number(item.quantity) || 1);
+        const itemTotal = price * quantity;
+
+        subtotal += itemTotal;
+        totalItems += quantity;
+
+        const details = [];
+
+        if (item.size) {
+            details.push("Size: " + item.size);
+        }
+
+        if (item.color) {
+            details.push("Colour: " + item.color);
+        }
+
+        cartItems.innerHTML += `
+            <div class="cart-item">
+
+                <div class="item-image">
+                    <img src="${item.image}" alt="${item.name || "Product"}">
+                </div>
+
+                <div class="item-info">
+
+                    <h3>${item.name || "Product"}</h3>
+
+                    ${details.length ? `
+                        <p>${details.join(" | ")}</p>
+                    ` : ""}
+
+                    <div class="item-price">
+                        ${formatPrice(price)}
+                    </div>
+
+                    <div class="quantity-control">
+
+                        <button onclick="changeCartQuantity(${index}, -1)">−</button>
+
+                        <span>${quantity}</span>
+
+                        <button onclick="changeCartQuantity(${index}, 1)">+</button>
+
+                    </div>
+
+                </div>
+
+                <div class="item-actions">
+
+                    <div class="item-total">
+                        ${formatPrice(itemTotal)}
+                    </div>
+
+                    <button class="remove-btn" onclick="removeItem(${index})">
+                        Remove
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+    });
+
+    document.getElementById("itemCount").textContent =
+        totalItems + (totalItems === 1 ? " Item" : " Items");
+
+    document.getElementById("subtotal").textContent =
+        formatPrice(subtotal);
+
+    document.getElementById("total").textContent =
+        formatPrice(subtotal);
+}
+
+// CHANGE QUANTITY
+function changeCartQuantity(index, amount) {
+
+    const cart = getCart();
+
+    if (!cart[index]) return;
+
+    cart[index].quantity = Math.max(
+        1,
+        (Number(cart[index].quantity) || 1) + amount
+    );
+
+    saveCart(cart);
+    renderCart();
+}
+
+// REMOVE PRODUCT
+function removeItem(index) {
+
+    const cart = getCart();
+
+    if (!cart[index]) return;
+
+    cart.splice(index, 1);
+
+    saveCart(cart);
+    renderCart();
+}
+
+// CHECKOUT
+function goToCheckout() {
+
+    const cart = getCart();
+
+    if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
+
+    window.location.href = "checkout.html";
+}
+
+// INITIAL LOAD
+renderCart();
+
+</script>
+
+</body>
+</html>

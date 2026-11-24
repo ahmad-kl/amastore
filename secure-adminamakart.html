@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Admin | AMAKART</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--ink:#171717;
+--muted:#777;
+--line:#e9e9e9;
+--bg:#f6f6f6;
+--green:#167a45;
+--red:#b42318;
+--amber:#9a6700
+}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.topbar{
+height:70px;background:#111;color:#fff;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 5%;gap:15px
+}
+.brand{font-size:22px;font-weight:900;letter-spacing:2px}
+.topbar small{
+display:block;color:#aaa;font-size:11px;
+letter-spacing:1px;margin-top:4px
+}
+.top-actions{display:flex;align-items:center;gap:15px}
+.admin-email{font-size:12px;color:#ddd;overflow-wrap:anywhere}
+
+.btn{
+border:0;padding:11px 15px;
+font-size:12px;font-weight:bold;letter-spacing:.4px
+}
+.btn-dark{background:#111;color:#fff}
+.btn-light{background:#eee;color:#111}
+.btn-green{background:#167a45;color:#fff}
+.btn-red{background:#b42318;color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+main{max-width:1200px;margin:35px auto;padding:0 22px 60px}
+.page-head{
+display:flex;justify-content:space-between;
+align-items:flex-end;gap:20px;margin-bottom:25px
+}
+.page-head h1{font-size:27px}
+.page-head p{color:var(--muted);font-size:13px;margin-top:7px}
+
+.stats{
+display:grid;grid-template-columns:repeat(4,1fr);
+gap:15px;margin-bottom:25px
+}
+.stat{background:#fff;border:1px solid var(--line);padding:20px}
+.stat span{display:block;color:var(--muted);font-size:12px;margin-bottom:12px}
+.stat strong{font-size:27px}
+
+.panel{background:#fff;border:1px solid var(--line);padding:22px}
+.toolbar{
+display:flex;justify-content:space-between;
+align-items:center;gap:15px;margin-bottom:18px;flex-wrap:wrap
+}
+.toolbar h2{font-size:18px}
+.filters{display:flex;gap:10px;flex-wrap:wrap}
+.filters input,.filters select{
+border:1px solid #ddd;padding:11px 12px;
+background:#fff;min-width:160px;font-size:13px;outline:none
+}
+
+.message{
+padding:13px 15px;margin-bottom:18px;
+font-size:13px;line-height:1.5;display:none
+}
+.message.error{display:block;background:#fff0ef;color:#9f2118;border:1px solid #ffd1cc}
+.message.info{display:block;background:#fff8e6;color:#805b00;border:1px solid #f1dfac}
+.message.success{display:block;background:#edf9f1;color:#17663a;border:1px solid #c7ead2}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{
+text-align:left;padding:14px 12px;
+border-bottom:1px solid var(--line);
+vertical-align:top;font-size:13px
+}
+th{
+font-size:11px;color:#777;text-transform:uppercase;
+letter-spacing:.6px;background:#fafafa
+}
+td strong{display:block;margin-bottom:5px}
+.sub{font-size:11px;color:#777;line-height:1.5}
+.pill{
+display:inline-block;padding:5px 8px;
+border-radius:20px;background:#f1f1f1;
+font-size:10px;font-weight:bold
+}
+.pill.pending{background:#fff3d6;color:#805b00}
+.pill.paid{background:#e8f7ed;color:#17663a}
+.pill.rejected{background:#ffeded;color:#a32121}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.row-actions .btn{padding:8px 9px;font-size:10px}
+.empty,.loading{text-align:center;padding:45px 15px;color:#777;font-size:13px}
+
+.tabs{display:flex;gap:8px;margin:0 0 22px;flex-wrap:wrap}
+.tab-btn{
+background:#e9e9e9;color:#222;border:0;
+padding:12px 18px;font-size:12px;font-weight:bold
+}
+.tab-btn.active{background:#111;color:#fff}
+.admin-section{display:none}
+.admin-section.active{display:block}
+
+.product-form{
+display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+gap:14px;margin-bottom:25px
+}
+.product-form .field{margin:0;min-width:0}
+.product-form .full{grid-column:1/-1}
+.product-form input,.product-form select,.product-form textarea{
+width:100%;padding:12px;border:1px solid #ddd;
+background:#fff;outline:none;font-size:13px
+}
+.product-form textarea{min-height:85px;resize:vertical}
+.product-actions{display:flex;gap:8px;flex-wrap:wrap}
+.product-thumb{width:48px;height:55px;object-fit:cover;background:#eee}
+
+.login-wrap{
+min-height:calc(100vh - 70px);
+display:grid;place-items:center;padding:25px
+}
+.login-card{
+width:100%;max-width:420px;
+background:#fff;border:1px solid var(--line);padding:32px
+}
+.login-card h1{font-size:24px;margin-bottom:8px}
+.login-card>p{
+font-size:13px;color:#777;line-height:1.6;margin-bottom:25px
+}
+.field{margin-bottom:17px}
+.field label{
+display:block;font-size:12px;font-weight:bold;margin-bottom:8px
+}
+.field input{width:100%;padding:14px;border:1px solid #ddd;outline:none}
+.field input:focus{border-color:#111}
+.login-card .btn{width:100%;padding:15px}
+.hidden{display:none!important}
+.footer-note{
+text-align:center;color:#999;font-size:11px;
+margin-top:22px;line-height:1.6
+}
+
+@media(max-width:800px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.page-head{align-items:flex-start;flex-direction:column}
+.admin-email{display:none}
+}
+@media(max-width:480px){
+.topbar{padding:0 18px}
+.brand{font-size:19px}
+main{padding:0 14px 40px;margin-top:25px}
+.stats{gap:9px}
+.stat{padding:15px}
+.stat strong{font-size:23px}
+.panel{padding:14px}
+.login-card{padding:24px}
+.product-form{grid-template-columns:1fr}
+.product-form .full{grid-column:auto}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div>
+        <div class="brand">AMAKART</div>
+        <small>SECURE ADMIN PANEL</small>
+    </div>
+
+    <div class="top-actions">
+        <span class="admin-email" id="adminEmail"></span>
+        <button class="btn btn-light hidden" id="logoutBtn" type="button">LOG OUT</button>
+    </div>
+</header>
+
+<section class="login-wrap" id="loginSection">
+    <form class="login-card" id="loginForm">
+        <h1>Admin Login</h1>
+        <p>Sign in with your authorized AMAKART administrator account.</p>
+
+        <div class="message error" id="loginError" role="alert"></div>
+
+        <div class="field">
+            <label for="email">EMAIL ADDRESS</label>
+            <input id="email" type="email" autocomplete="username"
+                   required placeholder="Admin email">
+        </div>
+
+        <div class="field">
+            <label for="password">PASSWORD</label>
+            <input id="password" type="password" autocomplete="current-password"
+                   required placeholder="Enter password">
+        </div>
+
+        <button class="btn btn-dark" id="loginBtn" type="submit">
+            LOGIN TO ADMIN
+        </button>
+
+        <div class="footer-note">
+            Only the authorized Firebase administrator account can access this panel.
+        </div>
+    </form>
+</section>
+
+<div id="fatalError" class="message error"
+     style="display:none;max-width:900px;margin:25px auto;padding:18px"
+     role="alert"></div>
+
+<main id="dashboard" class="hidden">
+
+    <div class="page-head">
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p>Manage AMAKART orders and products.</p>
+        </div>
+        <button class="btn btn-dark" id="refreshBtn" type="button">REFRESH</button>
+    </div>
+
+    <div class="message" id="dashboardMessage" role="status"></div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="ordersSection" type="button">ORDERS</button>
+        <button class="tab-btn" data-tab="productsSection" type="button">PRODUCTS</button>
+    </div>
+
+    <!-- ORDERS SECTION -->
+    <section class="admin-section active" id="ordersSection">
+
+        <section class="stats">
+            <div class="stat">
+                <span>Total Orders</span>
+                <strong id="totalOrders">0</strong>
+            </div>
+            <div class="stat">
+                <span>Pending Orders</span>
+                <strong id="pendingOrders">0</strong>
+            </div>
+            <div class="stat">
+                <span>Verified Payments</span>
+                <strong id="verifiedPayments">0</strong>
+            </div>
+            <div class="stat">
+                <span>Payment Review</span>
+                <strong id="reviewPayments">0</strong>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="toolbar">
+                <h2>Customer Orders</h2>
+
+                <div class="filters">
+                    <input id="searchInput" type="search"
+                           placeholder="Search order / customer / phone">
+
+                    <select id="statusFilter">
+                        <option value="all">All orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Order Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody">
+                        <tr><td colspan="7" class="loading">Loading orders...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <p class="footer-note">
+            Verify each UPI payment in your bank / UPI app before marking it as paid.
+        </p>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section class="admin-section" id="productsSection">
+
+        <section class="panel">
+            <div class="toolbar">
+                <h2 id="productFormTitle">Add New Product</h2>
+            </div>
+
+            <form id="productForm" class="product-form">
+
+                <input type="hidden" id="productDocId">
+
+                <div class="field">
+                    <label for="productName">PRODUCT NAME *</label>
+                    <input id="productName" required maxlength="100"
+                           placeholder="Enter product name">
+                </div>
+
+                <div class="field">
+                    <label for="productCategory">CATEGORY *</label>
+                    <select id="productCategory" required>
+                        <option value="tshirt">T-Shirts</option>
+                        <option value="hoodie">Hoodies</option>
+                        <option value="jacket">Jackets</option>
+                        <option value="cap">Caps</option>
+                        <option value="kids">Kids Clothing</option>
+                        <option value="frame">Acrylic Photo Frames</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="productPrice">SELLING PRICE (₹) *</label>
+                    <input id="productPrice" type="number" min="1"
+                           step="1" required placeholder="e.g. 499">
+                </div>
+
+                <div class="field">
+                    <label for="productOriginalPrice">ORIGINAL PRICE (₹)</label>
+                    <input id="productOriginalPrice" type="number"
+                           min="0" step="1" placeholder="e.g. 799">
+                </div>
+
+                <div class="field">
+                    <label for="productImage">PRODUCT IMAGE URL *</label>
+                    <input id="productImage" type="url" required
+                           placeholder="https://...">
+                </div>
+
+                <div class="field">
+                    <label for="productTag">PRODUCT TAG</label>
+                    <input id="productTag" maxlength="30"
+                           placeholder="NEW / BEST SELLER">
+                </div>
+
+                <div class="field full">
+                    <label for="productDescription">DESCRIPTION</label>
+                    <textarea id="productDescription" maxlength="1000"
+                              placeholder="Product description"></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="productSizes">SIZES (comma separated)</label>
+                    <input id="productSizes" placeholder="S, M, L, XL">
+                </div>
+
+                <div class="field">
+                    <label for="productColors">COLOURS (comma separated)</label>
+                    <input id="productColors" placeholder="Black, White, Blue">
+                </div>
+
+                <div class="field">
+                    <label for="productStock">STOCK QUANTITY</label>
+                    <input id="productStock" type="number" min="0"
+                           step="1" value="0">
+                </div>
+
+                <div class="field">
+                    <label for="productActive">VISIBILITY</label>
+                    <select id="productActive">
+                        <option value="true">Active - show on store</option>
+                        <option value="false">Hidden - do not show</option>
+                    </select>
+                </div>
+
+                <div class="full product-actions">
+                    <button class="btn btn-dark" id="saveProductBtn" type="submit">
+                        SAVE PRODUCT
+                    </button>
+                    <button class="btn btn-light hidden" id="cancelEditBtn" type="button">
+                        CANCEL EDIT
+                    </button>
+                </div>
+            </form>
+
+            <p class="sub">
+                Products are saved in the Firestore <b>products</b> collection.
+                Add a publicly accessible image URL.
+            </p>
+        </section>
+
+        <section class="panel" style="margin-top:22px">
+            <div class="toolbar">
+                <h2>Products by Category</h2>
+
+                <div class="filters">
+                    <input id="productSearch" type="search"
+                           placeholder="Search products">
+
+                    <select id="productCategoryFilter">
+                        <option value="all">All categories</option>
+                        <option value="tshirt">T-Shirts</option>
+                        <option value="hoodie">Hoodies</option>
+                        <option value="jacket">Jackets</option>
+                        <option value="cap">Caps</option>
+                        <option value="kids">Kids Clothing</option>
+                        <option value="frame">Acrylic Photo Frames</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Visibility</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsBody">
+                        <tr><td colspan="7" class="loading">Loading products...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    updateDoc,
+    addDoc,
+    deleteDoc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCE6aA53b9MszdFAl-KoU3_DDJXejIjQ4k",
+    authDomain: "amakart-4a249.firebaseapp.com",
+    projectId: "amakart-4a249",
+    storageBucket: "amakart-4a249.firebasestorage.app",
+    messagingSenderId: "399156555540",
+    appId: "1:399156555540:web:a03bc77ab75402cb52dc01",
+    measurementId: "G-HKTQ1JVF82"
+};
+
+const ADMIN_UID = "fyKomHvHmChwFycfrHh1uQqSApT2";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+/* ELEMENTS */
+
+const loginSection = document.getElementById("loginSection");
+const dashboard = document.getElementById("dashboard");
+const loginForm = document.getElementById("loginForm");
+const loginBtn = document.getElementById("loginBtn");
+const loginError = document.getElementById("loginError");
+const dashboardMessage = document.getElementById("dashboardMessage");
+const ordersBody = document.getElementById("ordersBody");
+const productsBody = document.getElementById("productsBody");
+const logoutBtn = document.getElementById("logoutBtn");
+const productForm = document.getElementById("productForm");
+
+let allOrders = [];
+let allProducts = [];
+let isAuthorized = false;
+
+
+/* ERROR HANDLING */
+
+function showFatalError(message) {
+    const box = document.getElementById("fatalError");
+
+    if (box) {
+        box.style.display = "block";
+        box.textContent = "Admin Panel could not start: " + message;
+    }
+
+    console.error("AMAKART Admin error:", message);
+}
+
+window.addEventListener("error", event => {
+    if (event.message) showFatalError(event.message);
+});
+
+window.addEventListener("unhandledrejection", event => {
+    const reason = event.reason;
+    showFatalError(reason?.message || String(reason || "Unknown error"));
+});
+
+
+/* COMMON FUNCTIONS */
+
+function showMessage(element, text, type = "error") {
+    element.textContent = text;
+    element.className = "message " + type;
+}
+
+function clearMessage(element) {
+    element.textContent = "";
+    element.className = "message";
+}
+
+function safe(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function money(value) {
+    return "₹" + Number(value || 0).toLocaleString("en-IN");
+}
+
+function orderDate(value) {
+    if (!value) return "Date unavailable";
+
+    const date = typeof value?.toDate === "function"
+        ? value.toDate()
+        : new Date(value);
+
+    return Number.isNaN(date.getTime())
+        ? "Date unavailable"
+        : date.toLocaleString("en-IN");
+}
+
+function paymentClass(status) {
+    const value = String(status || "").toLowerCase();
+
+    if (value.includes("verified") || value === "paid") return "paid";
+    if (value.includes("reject")) return "rejected";
+
+    return "pending";
+}
+
+function dateValue(value) {
+    if (typeof value?.toDate === "function") {
+        return value.toDate().getTime();
+    }
+
+    const time = new Date(value || 0).getTime();
+    return Number.isNaN(time) ? 0 : time;
+}
+
+
+/* AUTHENTICATION */
+
+loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    clearMessage(loginError);
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = "SIGNING IN...";
+
+    try {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        const result = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        if (result.user.uid !== ADMIN_UID) {
+            await signOut(auth);
+
+            throw new Error(
+                "This account is not authorized to access the AMAKART Admin Panel."
+            );
+        }
+
+    } catch (error) {
+        showMessage(loginError, error.message);
+
+    } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "LOGIN TO ADMIN";
+    }
+});
+
+
+onAuthStateChanged(auth, async user => {
+
+    if (!user) {
+        isAuthorized = false;
+
+        loginSection.classList.remove("hidden");
+        dashboard.classList.add("hidden");
+        logoutBtn.classList.add("hidden");
+
+        document.getElementById("adminEmail").textContent = "";
+
+        return;
+    }
+
+    if (user.uid !== ADMIN_UID) {
+        isAuthorized = false;
+
+        await signOut(auth);
+
+        showMessage(
+            loginError,
+            "This account is not authorized to access the AMAKART Admin Panel."
+        );
+
+        return;
+    }
+
+    isAuthorized = true;
+
+    loginSection.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+    logoutBtn.classList.remove("hidden");
+
+    document.getElementById("adminEmail").textContent =
+        user.email || "Admin";
+
+    await loadOrders();
+});
+
+
+logoutBtn.addEventListener("click", async () => {
+    await signOut(auth);
+});
+
+
+/* ORDERS STATISTICS */
+
+function updateStats(orders) {
+
+    document.getElementById("totalOrders").textContent = orders.length;
+
+    document.getElementById("pendingOrders").textContent =
+        orders.filter(order =>
+            String(order.status || "Pending").toLowerCase() === "pending"
+        ).length;
+
+    document.getElementById("verifiedPayments").textContent =
+        orders.filter(order =>
+            ["paid", "verified"].includes(
+                String(order.paymentStatus || "").toLowerCase()
+            )
+        ).length;
+
+    document.getElementById("reviewPayments").textContent =
+        orders.filter(order =>
+            !["paid", "verified", "rejected"].includes(
+                String(order.paymentStatus || "").toLowerCase()
+            )
+        ).length;
+}
+
+
+/* RENDER ORDERS */
+
+function renderOrders() {
+
+    const search = document.getElementById("searchInput")
+        .value.trim().toLowerCase();
+
+    const filter = document.getElementById("statusFilter").value;
+
+    const filtered = allOrders.filter(order => {
+
+        const customer = order.customer || {};
+
+        const searchText = [
+            order.orderId,
+            order.id,
+            customer.name,
+            customer.phone,
+            customer.email,
+            order.transactionId
+        ].join(" ").toLowerCase();
+
+        const payment = String(
+            order.paymentStatus || order.status || "pending"
+        ).toLowerCase();
+
+        const statusMatch =
+            filter === "all" ||
+            (filter === "pending" &&
+                (payment.includes("pending") || payment.includes("verification"))) ||
+            (filter === "paid" &&
+                (payment.includes("paid") || payment.includes("verified"))) ||
+            (filter === "rejected" && payment.includes("reject"));
+
+        return searchText.includes(search) && statusMatch;
+    });
+
+    if (!filtered.length) {
+        ordersBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">No orders found.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    ordersBody.innerHTML = filtered.map(order => {
+
+        const customer = order.customer || {};
+        const items = Array.isArray(order.items) ? order.items : [];
+
+        const itemText = items.map(item =>
+            `${safe(item.name || "Product")} × ${Number(item.quantity || 1)}`
+        ).join("<br>") || "No item details";
+
+        const paymentStatus = order.paymentStatus || "Verification Pending";
+        const orderStatus = order.status || "Pending";
+
+        const docId = safe(order.id);
+
+        const addons = Array.isArray(order.addons)
+            ? order.addons.map(addon => {
+                if (typeof addon === "string") return safe(addon);
+
+                return safe(
+                    `${addon.name || "Addon"} (+₹${Number(addon.price || 0)})`
+                );
+            }).join("<br>")
+            : "";
+
+        return `
+        <tr>
+            <td>
+                <strong>${safe(order.orderId || order.id)}</strong>
+                <div class="sub">
+                    Supplier Order: ${safe(order.supplierOrderNumber || "—")}
+                    <br>${safe(orderDate(order.createdAt))}
+                </div>
+            </td>
+
+            <td>
+                <strong>${safe(customer.name || "Customer")}</strong>
+                <div class="sub">
+                    ${safe(customer.phone || "")}<br>
+                    ${safe(customer.email || "")}<br>
+                    ${safe(customer.address || "")},
+                    ${safe(customer.city || "")},
+                    ${safe(customer.district || "")}
+                    ${safe(customer.pincode || "")}
+                </div>
+            </td>
+
+            <td>
+                ${itemText}
+                <div class="sub">${addons}</div>
+            </td>
+
+            <td>
+                <strong>${money(order.total ?? order.subtotal)}</strong>
+            </td>
+
+            <td>
+                <span class="pill ${paymentClass(paymentStatus)}">
+                    ${safe(paymentStatus)}
+                </span>
+                <div class="sub">
+                    UTR: ${safe(order.transactionId || "Not provided")}
+                </div>
+            </td>
+
+            <td>
+                <span class="pill ${paymentClass(orderStatus)}">
+                    ${safe(orderStatus)}
+                </span>
+            </td>
+
+            <td>
+                <div class="row-actions">
+                    <button class="btn btn-green"
+                        data-action="verify"
+                        data-id="${docId}"
+                        ${paymentClass(paymentStatus) === "paid" ? "disabled" : ""}>
+                        VERIFY
+                    </button>
+
+                    <button class="btn btn-red"
+                        data-action="reject"
+                        data-id="${docId}"
+                        ${paymentClass(paymentStatus) === "rejected" ? "disabled" : ""}>
+                        REJECT
+                    </button>
+
+                    <button class="btn btn-light"
+                        data-action="ship"
+                        data-id="${docId}">
+                        SHIPPED
+                    </button>
+
+                    <button class="btn btn-light"
+                        data-action="complete"
+                        data-id="${docId}">
+                        COMPLETE
+                    </button>
+                </div>
+            </td>
+        </tr>
+        `;
+    }).join("");
+}
+
+
+/* LOAD ORDERS */
+
+async function loadOrders() {
+
+    if (!isAuthorized) return;
+
+    clearMessage(dashboardMessage);
+
+    ordersBody.innerHTML = `
+        <tr><td colspan="7" class="loading">Loading orders...</td></tr>
+    `;
+
+    try {
+
+        const snapshot = await getDocs(collection(db, "orders"));
+
+        allOrders = snapshot.docs.map(item => ({
+            id: item.id,
+            ...item.data()
+        }));
+
+        allOrders.sort((a, b) =>
+            dateValue(b.createdAt) - dateValue(a.createdAt)
+        );
+
+        updateStats(allOrders);
+        renderOrders();
+
+        if (!allOrders.length) {
+            showMessage(
+                dashboardMessage,
+                'No customer orders are stored in the Firestore "orders" collection yet.',
+                "info"
+            );
+        }
+
+    } catch (error) {
+
+        ordersBody.innerHTML = `
+            <tr><td colspan="7" class="empty">Could not load orders.</td></tr>
+        `;
+
+        showMessage(
+            dashboardMessage,
+            "Could not read Firestore orders: " + error.message
+        );
+    }
+}
+
+
+/* ORDER SEARCH AND FILTER */
+
+document.getElementById("searchInput")
+    .addEventListener("input", renderOrders);
+
+document.getElementById("statusFilter")
+    .addEventListener("change", renderOrders);
+
+
+/* ORDER ACTIONS */
+
+ordersBody.addEventListener("click", async event => {
+
+    const button = event.target.closest("button[data-action]");
+
+    if (!button || !isAuthorized) return;
+
+    const order = allOrders.find(item =>
+        item.id === button.dataset.id
+    );
+
+    if (!order) return;
+
+    const action = button.dataset.action;
+    let changes = {};
+
+    if (action === "verify") {
+
+        if (!confirm(
+            "Have you checked your UPI / bank statement and confirmed this payment?"
+        )) return;
+
+        changes = {
+            paymentStatus: "Paid",
+            status: "Confirmed"
+        };
+
+    } else if (action === "reject") {
+
+        if (!confirm("Reject this payment?")) return;
+
+        changes = {
+            paymentStatus: "Rejected",
+            status: "Payment Rejected"
+        };
+
+    } else if (action === "ship") {
+
+        changes = { status: "Shipped" };
+
+    } else if (action === "complete") {
+
+        changes = { status: "Completed" };
+    }
+
+    button.disabled = true;
+
+    try {
+
+        // Update the private order document.
+        await updateDoc(
+            doc(db, "orders", order.id),
+            {
+                ...changes,
+                updatedAt: new Date().toISOString()
+            }
+        );
+
+        // Update/create the minimal public tracking document.
+        // Do not copy customer details or payment information here.
+        await setDoc(
+            doc(db, "orderTracking", order.id),
+            {
+                orderId: order.orderId || order.id,
+                status: changes.status || order.status || "Pending",
+                updatedAt: new Date().toISOString()
+            },
+            { merge: true }
+        );
+
+        Object.assign(order, changes);
+
+        updateStats(allOrders);
+        renderOrders();
+
+        showMessage(
+            dashboardMessage,
+            "Order " + (order.orderId || order.id) +
+            " and customer tracking status updated successfully.",
+            "success"
+        );
+
+    } catch (error) {
+
+        button.disabled = false;
+
+        showMessage(
+            dashboardMessage,
+            "Could not update order/tracking: " + error.message
+        );
+
+        console.error("AMAKART order tracking update error:", error);
+    }
+});
+
+
+/* ADMIN TABS */
+
+document.querySelectorAll(".tab-btn").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        document.querySelectorAll(".tab-btn").forEach(item => {
+            item.classList.toggle("active", item === button);
+        });
+
+        document.querySelectorAll(".admin-section").forEach(section => {
+            section.classList.toggle(
+                "active",
+                section.id === button.dataset.tab
+            );
+        });
+
+        if (button.dataset.tab === "productsSection") {
+            loadProducts();
+        }
+    });
+});
+
+
+/* PRODUCT FUNCTIONS */
+
+function categoryName(value) {
+
+    return ({
+        tshirt: "T-Shirts",
+        hoodie: "Hoodies",
+        jacket: "Jackets",
+        cap: "Caps",
+        kids: "Kids Clothing",
+        frame: "Acrylic Photo Frames"
+    })[value] || value || "Uncategorised";
+}
+
+function csvValues(value) {
+
+    return value.split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+}
+
+
+/* RESET PRODUCT FORM */
+
+function resetProductForm() {
+
+    productForm.reset();
+
+    document.getElementById("productDocId").value = "";
+    document.getElementById("productStock").value = 0;
+    document.getElementById("productActive").value = "true";
+
+    document.getElementById("productFormTitle").textContent =
+        "Add New Product";
+
+    document.getElementById("saveProductBtn").textContent =
+        "SAVE PRODUCT";
+
+    document.getElementById("cancelEditBtn")
+        .classList.add("hidden");
+}
+
+
+/* RENDER PRODUCTS */
+
+function renderProducts() {
+
+    const search = document.getElementById("productSearch")
+        .value.trim().toLowerCase();
+
+    const category = document.getElementById("productCategoryFilter").value;
+
+    const filtered = allProducts.filter(product => {
+
+        const matchesSearch =
+            String(product.name || "").toLowerCase().includes(search);
+
+        const matchesCategory =
+            category === "all" || product.category === category;
+
+        return matchesSearch && matchesCategory;
+    });
+
+    if (!filtered.length) {
+
+        productsBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">No products found in this category.</td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    productsBody.innerHTML = filtered.map(product => {
+
+        const image = safe(product.image || "");
+        const tag = product.tag
+            ? `<div class="sub">${safe(product.tag)}</div>`
+            : "";
+
+        const originalPrice = Number(
+            product.originalPrice ?? product.oldPrice ?? 0
+        );
+
+        return `
+        <tr>
+            <td>
+                <img class="product-thumb"
+                     src="${image}"
+                     alt=""
+                     onerror="this.style.visibility='hidden'">
+            </td>
+
+            <td>
+                <strong>${safe(product.name)}</strong>
+                ${tag}
+                <div class="sub">${safe(product.description || "")}</div>
+            </td>
+
+            <td>${safe(categoryName(product.category))}</td>
+
+            <td>
+                <strong>${money(product.price)}</strong>
+                ${originalPrice > 0
+                    ? `<div class="sub">Original: ${money(originalPrice)}</div>`
+                    : ""}
+            </td>
+
+            <td>${Number(product.stock || 0)}</td>
+
+            <td>
+                <span class="pill ${product.active === false ? "rejected" : "paid"}">
+                    ${product.active === false ? "Hidden" : "Active"}
+                </span>
+            </td>
+
+            <td>
+                <div class="product-actions">
+                    <button class="btn btn-light"
+                        data-product-action="edit"
+                        data-id="${safe(product.id)}">
+                        EDIT
+                    </button>
+
+                    <button class="btn btn-red"
+                        data-product-action="delete"
+                        data-id="${safe(product.id)}">
+                        DELETE
+                    </button>
+                </div>
+            </td>
+        </tr>
+        `;
+    }).join("");
+}
+
+
+/* LOAD PRODUCTS */
+
+async function loadProducts() {
+
+    if (!isAuthorized) return;
+
+    productsBody.innerHTML = `
+        <tr><td colspan="7" class="loading">Loading products...</td></tr>
+    `;
+
+    try {
+
+        const snapshot = await getDocs(collection(db, "products"));
+
+        allProducts = snapshot.docs.map(item => ({
+            id: item.id,
+            ...item.data()
+        }));
+
+        allProducts.sort((a, b) =>
+            String(a.name || "").localeCompare(String(b.name || ""))
+        );
+
+        renderProducts();
+
+    } catch (error) {
+
+        productsBody.innerHTML = `
+            <tr><td colspan="7" class="empty">Could not load products.</td></tr>
+        `;
+
+        showMessage(
+            dashboardMessage,
+            "Could not read products: " + error.message
+        );
+    }
+}
+
+
+/* ADD / UPDATE PRODUCT */
+
+productForm.addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    if (!isAuthorized) return;
+
+    const saveButton = document.getElementById("saveProductBtn");
+
+    const priceValue = document.getElementById("productPrice").value;
+    const originalPriceValue = document.getElementById("productOriginalPrice").value;
+    const stockValue = document.getElementById("productStock").value;
+
+    const price = Number(priceValue);
+    const originalPrice = originalPriceValue === ""
+        ? 0
+        : Number(originalPriceValue);
+
+    const stock = Number(stockValue || 0);
+
+    const imageUrl = document.getElementById("productImage").value.trim();
+
+    if (
+        !Number.isFinite(price) ||
+        price <= 0 ||
+        !Number.isFinite(originalPrice) ||
+        originalPrice < 0 ||
+        !Number.isInteger(stock) ||
+        stock < 0
+    ) {
+        showMessage(
+            dashboardMessage,
+            "Enter a valid selling price, original price and stock quantity."
+        );
+        return;
+    }
+
+    if (originalPrice > 0 && originalPrice < price) {
+        showMessage(
+            dashboardMessage,
+            "Original price should not be lower than selling price."
+        );
+        return;
+    }
+
+    let parsedImage;
+
+    try {
+        parsedImage = new URL(imageUrl);
+
+        if (!["https:", "http:"].includes(parsedImage.protocol)) {
+            throw new Error("Invalid image URL");
+        }
+
+    } catch {
+        showMessage(dashboardMessage, "Enter a valid product image URL.");
+        return;
+    }
+
+    const product = {
+        name: document.getElementById("productName").value.trim(),
+        category: document.getElementById("productCategory").value,
+        price,
+        originalPrice,
+        image: imageUrl,
+        tag: document.getElementById("productTag").value.trim(),
+        description: document.getElementById("productDescription").value.trim(),
+        sizes: csvValues(document.getElementById("productSizes").value),
+        colors: csvValues(document.getElementById("productColors").value),
+        stock,
+        active: document.getElementById("productActive").value === "true",
+        updatedAt: new Date().toISOString()
+    };
+
+    if (!product.name) {
+        showMessage(dashboardMessage, "Enter a product name.");
+        return;
+    }
+
+    saveButton.disabled = true;
+    saveButton.textContent = "SAVING...";
+
+    try {
+
+        const existingId =
+            document.getElementById("productDocId").value;
+
+        if (existingId) {
+
+            await updateDoc(
+                doc(db, "products", existingId),
+                product
+            );
+
+            showMessage(
+                dashboardMessage,
+                "Product updated successfully.",
+                "success"
+            );
+
+        } else {
+
+            product.createdAt = new Date().toISOString();
+
+            await addDoc(
+                collection(db, "products"),
+                product
+            );
+
+            showMessage(
+                dashboardMessage,
+                "Product added successfully.",
+                "success"
+            );
+        }
+
+        resetProductForm();
+
+        await loadProducts();
+
+    } catch (error) {
+
+        showMessage(
+            dashboardMessage,
+            "Could not save product: " + error.message
+        );
+
+    } finally {
+
+        saveButton.disabled = false;
+
+        saveButton.textContent =
+            document.getElementById("productDocId").value
+                ? "UPDATE PRODUCT"
+                : "SAVE PRODUCT";
+    }
+});
+
+
+/* CANCEL EDIT */
+
+document.getElementById("cancelEditBtn")
+    .addEventListener("click", resetProductForm);
+
+
+/* PRODUCT SEARCH AND FILTER */
+
+document.getElementById("productSearch")
+    .addEventListener("input", renderProducts);
+
+document.getElementById("productCategoryFilter")
+    .addEventListener("change", renderProducts);
+
+
+/* EDIT AND DELETE PRODUCTS */
+
+productsBody.addEventListener("click", async event => {
+
+    const button = event.target.closest("button[data-product-action]");
+
+    if (!button || !isAuthorized) return;
+
+    const product = allProducts.find(item =>
+        item.id === button.dataset.id
+    );
+
+    if (!product) return;
+
+    const action = button.dataset.productAction;
+
+    if (action === "edit") {
+
+        document.getElementById("productDocId").value = product.id;
+        document.getElementById("productName").value = product.name || "";
+        document.getElementById("productCategory").value = product.category || "tshirt";
+        document.getElementById("productPrice").value = product.price ?? "";
+
+        document.getElementById("productOriginalPrice").value =
+            product.originalPrice ?? product.oldPrice ?? "";
+
+        document.getElementById("productImage").value = product.image || "";
+        document.getElementById("productTag").value = product.tag || "";
+        document.getElementById("productDescription").value = product.description || "";
+
+        document.getElementById("productSizes").value =
+            Array.isArray(product.sizes) ? product.sizes.join(", ") : "";
+
+        document.getElementById("productColors").value =
+            Array.isArray(product.colors) ? product.colors.join(", ") : "";
+
+        document.getElementById("productStock").value = product.stock ?? 0;
+
+        document.getElementById("productActive").value =
+            product.active === false ? "false" : "true";
+
+        document.getElementById("productFormTitle").textContent =
+            "Edit Product";
+
+        document.getElementById("saveProductBtn").textContent =
+            "UPDATE PRODUCT";
+
+        document.getElementById("cancelEditBtn")
+            .classList.remove("hidden");
+
+        document.getElementById("productForm")
+            .scrollIntoView({ behavior: "smooth" });
+
+        return;
+    }
+
+    if (!confirm(`Delete "${product.name}" permanently?`)) return;
+
+    button.disabled = true;
+
+    try {
+
+        await deleteDoc(doc(db, "products", product.id));
+
+        allProducts = allProducts.filter(item =>
+            item.id !== product.id
+        );
+
+        renderProducts();
+
+        showMessage(
+            dashboardMessage,
+            "Product deleted successfully.",
+            "success"
+        );
+
+    } catch (error) {
+
+        button.disabled = false;
+
+        showMessage(
+            dashboardMessage,
+            "Could not delete product: " + error.message
+        );
+    }
+});
+
+
+/* REFRESH */
+
+document.getElementById("refreshBtn").addEventListener("click", () => {
+
+    if (!isAuthorized) return;
+
+    if (document.getElementById("productsSection").classList.contains("active")) {
+        loadProducts();
+    } else {
+        loadOrders();
+    }
+});
+
+</script>
+</body>
+</html>

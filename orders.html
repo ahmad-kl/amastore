@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders | AMAKART</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #222;
+    background: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.announcement {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+header {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    border-bottom: 1px solid #eee;
+    background: white;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.header-icons {
+    font-size: 22px;
+}
+
+.cart-count {
+    font-size: 11px;
+    background: #111;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 50%;
+    vertical-align: top;
+}
+
+.page-title {
+    text-align: center;
+    padding: 50px 15px 30px;
+}
+
+.page-title h1 {
+    font-size: 30px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.page-title p {
+    font-size: 13px;
+    color: #888;
+}
+
+.breadcrumb {
+    padding: 15px 6%;
+    font-size: 13px;
+    color: #777;
+}
+
+.breadcrumb a {
+    color: #222;
+}
+
+.orders-container {
+    max-width: 1100px;
+    margin: 25px auto 80px;
+    padding: 0 6%;
+}
+
+.orders-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.orders-heading h2 {
+    font-size: 20px;
+}
+
+.orders-heading span {
+    color: #888;
+    font-size: 13px;
+}
+
+.order-card {
+    border: 1px solid #e8e8e8;
+    margin-bottom: 25px;
+}
+
+.order-header {
+    background: #f8f8f8;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #eee;
+}
+
+.order-meta {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+}
+
+.meta-item small {
+    display: block;
+    font-size: 10px;
+    color: #888;
+    margin-bottom: 6px;
+    letter-spacing: .5px;
+}
+
+.meta-item strong {
+    font-size: 13px;
+}
+
+.status {
+    display: inline-block;
+    background: #fff4dc;
+    color: #a66c00;
+    padding: 7px 12px;
+    font-size: 11px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.status.pending,
+.status.verification-pending {
+    background: #fff4dc;
+    color: #a66c00;
+}
+
+.status.confirmed {
+    background: #e8f1ff;
+    color: #1762b5;
+}
+
+.status.shipped {
+    background: #eee8ff;
+    color: #6941c6;
+}
+
+.status.completed {
+    background: #e5f8ed;
+    color: #168348;
+}
+
+.status.rejected,
+.status.cancelled {
+    background: #ffe9e9;
+    color: #c62828;
+}
+
+.order-products {
+    padding: 5px 22px;
+}
+
+.order-product {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-product:last-child {
+    border-bottom: none;
+}
+
+.product-image {
+    width: 80px;
+    height: 95px;
+    background: #f5f5f5;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-info h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.product-info p {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.order-footer {
+    background: #fafafa;
+    padding: 17px 22px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.order-total {
+    font-size: 14px;
+}
+
+.order-total strong {
+    font-size: 17px;
+    margin-left: 8px;
+}
+
+.view-details-btn {
+    padding: 11px 20px;
+    background: #111;
+    color: white;
+    border: none;
+    font-size: 11px;
+    letter-spacing: .5px;
+    cursor: pointer;
+}
+
+.view-details-btn:hover {
+    background: #444;
+}
+
+.empty-orders {
+    text-align: center;
+    padding: 75px 15px;
+}
+
+.empty-icon {
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+.empty-orders h2 {
+    font-size: 23px;
+    margin-bottom: 12px;
+}
+
+.empty-orders p {
+    font-size: 14px;
+    color: #888;
+}
+
+.shop-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 15px 30px;
+    background: #111;
+    color: white;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.order-details {
+    display: none;
+    padding: 20px 22px;
+    border-top: 1px solid #eee;
+    background: #fff;
+}
+
+.order-details.active {
+    display: block;
+}
+
+.order-details h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.order-details p {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.8;
+}
+
+.status-note {
+    font-size: 11px;
+    color: #888;
+    margin-top: 7px;
+}
+
+footer {
+    background: #111;
+    color: white;
+    padding: 45px 6% 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 35px;
+}
+
+.footer-logo {
+    font-size: 25px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+footer p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+footer h3 {
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+footer a {
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    margin-top: 35px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+@media(max-width: 650px) {
+    header {
+        height: 65px;
+        padding: 0 5%;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .page-title h1 {
+        font-size: 25px;
+    }
+
+    .orders-container {
+        padding: 0 4%;
+    }
+
+    .order-header {
+        padding: 15px;
+    }
+
+    .order-meta {
+        gap: 18px;
+    }
+
+    .order-products {
+        padding: 5px 15px;
+    }
+
+    .order-product {
+        gap: 12px;
+    }
+
+    .product-image {
+        width: 65px;
+        height: 80px;
+    }
+
+    .order-footer {
+        padding: 15px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-about {
+        grid-column: 1 / -1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">
+    THANK YOU FOR SHOPPING WITH AMAKART
+</div>
+
+<header>
+    <a href="index.html" class="logo">AMAKART</a>
+
+    <div class="header-icons">
+        <a href="cart.html">🛒<span class="cart-count" id="cartCount">0</span></a>
+    </div>
+</header>
+
+<section class="page-title">
+    <h1>MY ORDERS</h1>
+    <p>Track and manage your purchases</p>
+</section>
+
+<div class="breadcrumb">
+    <a href="index.html">Home</a> / My Orders
+</div>
+
+<section class="orders-container">
+
+    <div id="ordersContent">
+
+        <div class="orders-heading">
+            <h2>Order History</h2>
+            <span id="orderCount">0 Orders</span>
+        </div>
+
+        <div id="ordersList"></div>
+
+    </div>
+
+    <div class="empty-orders" id="emptyOrders" style="display:none;">
+
+        <div class="empty-icon">📦</div>
+
+        <h2>No Orders Yet</h2>
+
+        <p>You haven't placed any orders yet.</p>
+
+        <a href="index.html" class="shop-btn">START SHOPPING</a>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <div class="footer-content">
+
+        <div class="footer-about">
+            <div class="footer-logo">AMAKART</div>
+            <p>Your style, your memories, your choice.</p>
+        </div>
+
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="tshirt.html">T-Shirts</a>
+            <a href="hoodie.html">Hoodies</a>
+            <a href="jacket.html">Jackets</a>
+            <a href="cap.html">Caps</a>
+            <a href="frame.html">Photo Frames</a>
+        </div>
+
+        <div>
+            <h3>Customer Service</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="orders.html">My Orders</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="refund.html">Refund Policy</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 AMAKART. All Rights Reserved.
+    </div>
+
+</footer>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCEaA53b9MszdFAl-KoU3_DDJXejIjQ4k",
+    authDomain: "amakart-4a249.firebaseapp.com",
+    projectId: "amakart-4a249",
+    storageBucket: "amakart-4a249.firebasestorage.app",
+    messagingSenderId: "399156555540",
+    appId: "1:399156555540:web:a03bc77ab75402cb52dc01",
+    measurementId: "G-HKTQ1JVF82"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// GET ORDERS FROM LOCAL STORAGE
+function getOrders() {
+    try {
+        return JSON.parse(localStorage.getItem("amakartOrders")) || [];
+    } catch (error) {
+        console.error("Unable to read saved orders:", error);
+        return [];
+    }
+}
+
+// SAVE UPDATED ORDERS
+function saveOrders(orders) {
+    localStorage.setItem("amakartOrders", JSON.stringify(orders));
+}
+
+// FORMAT PRICE
+function formatPrice(price) {
+    return "₹" + Number(price || 0).toLocaleString("en-IN");
+}
+
+// ESCAPE HTML
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+// STATUS CLASS
+function getStatusClass(status) {
+    return String(status || "Pending")
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+}
+
+// UPDATE CART COUNT
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("amakartCart")) || [];
+
+    const count = cart.reduce((sum, item) => {
+        return sum + Number(item.quantity || 1);
+    }, 0);
+
+    document.getElementById("cartCount").textContent = count;
+}
+
+// FORMAT DATE
+function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    if (isNaN(date.getTime())) return "Date unavailable";
+
+    return date.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+// UPDATE STATUS ON SCREEN
+function updateStatusOnScreen(order, status) {
+
+    const statusElement = document.getElementById(
+        "status-" + order.firestoreId
+    );
+
+    if (statusElement) {
+        statusElement.textContent = status;
+        statusElement.className = "status " + getStatusClass(status);
+    }
+}
+
+// LISTEN TO FIREBASE TRACKING DOCUMENTS
+const trackingUnsubscribers = new Map();
+
+function listenToOrderTracking(order) {
+
+    if (!order.firestoreId) {
+        return;
+    }
+
+    const trackingId = order.firestoreId;
+
+    // Avoid duplicate listeners
+    if (trackingUnsubscribers.has(trackingId)) {
+        return;
+    }
+
+    const trackingRef = doc(db, "orderTracking", trackingId);
+
+    const unsubscribe = onSnapshot(
+        trackingRef,
+
+        (snapshot) => {
+
+            if (!snapshot.exists()) {
+                // Tracking document has not been created yet.
+                return;
+            }
+
+            const trackingData = snapshot.data();
+
+            if (!trackingData.status) return;
+
+            const updatedStatus = trackingData.status;
+
+            // Update the visible status
+            updateStatusOnScreen(order, updatedStatus);
+
+            // Update local order history
+            const orders = getOrders();
+
+            const orderIndex = orders.findIndex(
+                item => item.firestoreId === trackingId
+            );
+
+            if (orderIndex !== -1) {
+
+                orders[orderIndex].status = updatedStatus;
+
+                if (trackingData.updatedAt) {
+                    orders[orderIndex].trackingUpdatedAt =
+                        trackingData.updatedAt;
+                }
+
+                saveOrders(orders);
+            }
+
+            // Update latest order if it matches
+            const latestOrder = JSON.parse(
+                localStorage.getItem("amakartLatestOrder") || "null"
+            );
+
+            if (
+                latestOrder &&
+                latestOrder.firestoreId === trackingId
+            ) {
+                latestOrder.status = updatedStatus;
+
+                localStorage.setItem(
+                    "amakartLatestOrder",
+                    JSON.stringify(latestOrder)
+                );
+            }
+
+        },
+
+        (error) => {
+            console.error(
+                "Order tracking listener error:",
+                error
+            );
+        }
+    );
+
+    trackingUnsubscribers.set(trackingId, unsubscribe);
+}
+
+// SHOW / HIDE ORDER DETAILS
+function toggleDetails(index) {
+
+    const details = document.getElementById("details-" + index);
+
+    if (!details) return;
+
+    details.classList.toggle("active");
+}
+
+// DISPLAY ORDERS
+function renderOrders() {
+
+    const orders = getOrders();
+
+    const ordersList = document.getElementById("ordersList");
+    const ordersContent = document.getElementById("ordersContent");
+    const emptyOrders = document.getElementById("emptyOrders");
+
+    updateCartCount();
+
+    if (orders.length === 0) {
+
+        ordersContent.style.display = "none";
+        emptyOrders.style.display = "block";
+
+        return;
+    }
+
+    ordersContent.style.display = "block";
+    emptyOrders.style.display = "none";
+
+    document.getElementById("orderCount").textContent =
+        orders.length + (orders.length === 1 ? " Order" : " Orders");
+
+    ordersList.innerHTML = "";
+
+    // Latest order first
+    const sortedOrders = [...orders].reverse();
+
+    sortedOrders.forEach((order, index) => {
+
+        const orderIndex = orders.length - 1 - index;
+
+        const items = Array.isArray(order.items) ? order.items : [];
+
+        const productHTML = items.map(item => {
+
+            const quantity = Number(item.quantity) || 1;
+            const price = Number(item.price) || 0;
+
+            let options = [];
+
+            if (item.size) {
+                options.push("Size: " + escapeHTML(item.size));
+            }
+
+            if (item.color) {
+                options.push("Colour: " + escapeHTML(item.color));
+            }
+
+            const imageHTML = item.image
+                ? `<img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.name || "Product")}" onerror="this.style.display='none'">`
+                : "";
+
+            return `
+                <div class="order-product">
+
+                    <div class="product-image">
+                        ${imageHTML}
+                    </div>
+
+                    <div class="product-info">
+                        <h3>${escapeHTML(item.name || "Product")}</h3>
+                        <p>Quantity: ${quantity}</p>
+                        ${options.length ? `<p>${options.join(" | ")}</p>` : ""}
+                    </div>
+
+                    <div class="product-price">
+                        ${formatPrice(price * quantity)}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+
+        const customer = order.customer || {};
+        const status = order.status || "Pending";
+
+        const orderCard = document.createElement("div");
+        orderCard.className = "order-card";
+
+        orderCard.innerHTML = `
+
+            <div class="order-header">
+
+                <div class="order-meta">
+
+                    <div class="meta-item">
+                        <small>ORDER ID</small>
+                        <strong>${escapeHTML(order.orderId || "N/A")}</strong>
+                    </div>
+
+                    <div class="meta-item">
+                        <small>ORDER DATE</small>
+                        <strong>${formatDate(order.createdAt)}</strong>
+                    </div>
+
+                    <div class="meta-item">
+                        <small>TOTAL</small>
+                        <strong>${formatPrice(order.total ?? order.subtotal ?? 0)}</strong>
+                    </div>
+
+                </div>
+
+                <div>
+                    <span
+                        class="status ${getStatusClass(status)}"
+                        id="status-${escapeHTML(order.firestoreId || "local-" + orderIndex)}"
+                    >
+                        ${escapeHTML(status)}
+                    </span>
+
+                    <div class="status-note">
+                        Live order updates
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="order-products">
+                ${productHTML}
+            </div>
+
+            <div class="order-footer">
+
+                <div class="order-total">
+                    Order Total:
+                    <strong>${formatPrice(order.total ?? order.subtotal ?? 0)}</strong>
+                </div>
+
+                <button
+                    class="view-details-btn"
+                    type="button"
+                    data-details-index="${orderIndex}"
+                >
+                    VIEW DETAILS
+                </button>
+
+            </div>
+
+            <div class="order-details" id="details-${orderIndex}">
+
+                <h3>Delivery Information</h3>
+
+                <p>
+                    <strong>Name:</strong> ${escapeHTML(customer.name || "N/A")}<br>
+                    <strong>Phone:</strong> ${escapeHTML(customer.phone || "N/A")}<br>
+                    <strong>Email:</strong> ${escapeHTML(customer.email || "Not provided")}<br>
+                    <strong>Address:</strong> ${escapeHTML(customer.address || "N/A")}<br>
+                    <strong>City:</strong> ${escapeHTML(customer.city || "N/A")}<br>
+                    <strong>District:</strong> ${escapeHTML(customer.district || "N/A")}<br>
+                    <strong>State:</strong> ${escapeHTML(customer.state || "N/A")}<br>
+                    <strong>PIN Code:</strong> ${escapeHTML(customer.pincode || "N/A")}<br>
+                    <strong>Landmark:</strong> ${escapeHTML(customer.landmark || "N/A")}
+                </p>
+
+            </div>
+        `;
+
+        ordersList.appendChild(orderCard);
+
+        // Start live Firebase tracking
+        listenToOrderTracking(order);
+
+    });
+
+}
+
+// DETAILS BUTTON EVENT
+document.getElementById("ordersList").addEventListener(
+    "click",
+    function(event) {
+
+        const button = event.target.closest("[data-details-index]");
+
+        if (!button) return;
+
+        const index = button.dataset.detailsIndex;
+
+        toggleDetails(index);
+    }
+);
+
+// INITIAL LOAD
+updateCartCount();
+renderOrders();
+
+</script>
+
+</body>
+</html>

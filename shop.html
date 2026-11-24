@@ -1,0 +1,1337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Shop | AMAKART</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root {
+    --primary:#ff6b35;
+    --dark:#171717;
+    --gray:#777;
+    --border:#eee;
+}
+
+body {
+    font-family:'DM Sans',sans-serif;
+    color:var(--dark);
+    background:white;
+}
+
+a {
+    text-decoration:none;
+    color:inherit;
+}
+
+button,input,select {
+    font-family:inherit;
+}
+
+/* ANNOUNCEMENT */
+
+.announcement {
+    background:#171717;
+    color:white;
+    text-align:center;
+    padding:10px;
+    font-size:12px;
+}
+
+.announcement span {
+    color:#ff956e;
+    font-weight:700;
+}
+
+/* HEADER */
+
+header {
+    height:78px;
+    padding:0 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border);
+    position:sticky;
+    top:0;
+    background:white;
+    z-index:100;
+}
+
+.logo {
+    font-family:'Outfit',sans-serif;
+    font-size:29px;
+    font-weight:800;
+    letter-spacing:-1.5px;
+}
+
+.logo span {
+    color:var(--primary);
+}
+
+.header-actions {
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.header-actions a {
+    font-size:14px;
+    font-weight:600;
+}
+
+.cart {
+    font-size:21px!important;
+    position:relative;
+}
+
+.cart-count {
+    position:absolute;
+    top:-9px;
+    right:-10px;
+    background:var(--primary);
+    color:white;
+    width:17px;
+    height:17px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-size:10px;
+}
+
+.menu-btn {
+    width:42px;
+    height:42px;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:5px;
+    cursor:pointer;
+    font-size:23px;
+    display:grid;
+    place-items:center;
+}
+
+/* MENU OVERLAY */
+
+.menu-overlay {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:150;
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+}
+
+.menu-overlay.active {
+    opacity:1;
+    visibility:visible;
+}
+
+.side-menu {
+    position:fixed;
+    top:0;
+    right:-350px;
+    width:320px;
+    max-width:85%;
+    height:100vh;
+    background:white;
+    z-index:160;
+    padding:28px;
+    overflow-y:auto;
+    transition:.35s ease;
+}
+
+.side-menu.active {
+    right:0;
+}
+
+.menu-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--border);
+}
+
+.close-menu {
+    background:none;
+    border:none;
+    font-size:27px;
+    cursor:pointer;
+}
+
+.menu-links {
+    padding:22px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.menu-links a {
+    display:block;
+    padding:12px 0;
+    font-size:14px;
+    font-weight:600;
+}
+
+.menu-links a:hover,
+.menu-categories a:hover {
+    color:var(--primary);
+}
+
+.menu-categories {
+    padding-top:22px;
+}
+
+.menu-categories h4 {
+    font-size:11px;
+    color:#999;
+    letter-spacing:1.5px;
+    margin-bottom:12px;
+}
+
+.menu-categories a {
+    display:block;
+    padding:12px 0;
+    font-size:14px;
+    border-bottom:1px solid #f5f5f5;
+}
+
+/* COLLECTION HERO / SLIDESHOW */
+
+.collection-hero {
+    margin:30px 7%;
+    height:390px;
+    border-radius:9px;
+    position:relative;
+    overflow:hidden;
+    background:#222;
+}
+
+.slide {
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transition:opacity 1.3s ease;
+}
+
+.slide.active {
+    opacity:1;
+}
+
+.slide img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.slide::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        rgba(0,0,0,.75),
+        rgba(0,0,0,.25),
+        rgba(0,0,0,.05)
+    );
+}
+
+.hero-text {
+    position:absolute;
+    z-index:3;
+    top:50%;
+    left:8%;
+    transform:translateY(-50%);
+    color:white;
+    max-width:470px;
+    animation:heroFade 1s ease;
+}
+
+.hero-text .eyebrow {
+    color:#ff956e;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:17px;
+}
+
+.hero-text h1 {
+    font-family:'Outfit',sans-serif;
+    font-size:clamp(35px,5vw,57px);
+    line-height:1.1;
+    letter-spacing:-1.5px;
+    margin-bottom:16px;
+}
+
+.hero-text p {
+    font-size:14px;
+    line-height:1.8;
+    color:#eee;
+    margin-bottom:25px;
+}
+
+.hero-btn {
+    display:inline-block;
+    background:var(--primary);
+    color:white;
+    padding:14px 25px;
+    border-radius:4px;
+    font-size:12px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.hero-btn:hover {
+    background:white;
+    color:var(--dark);
+}
+
+@keyframes heroFade {
+    from {
+        opacity:0;
+        transform:translateY(-40%);
+    }
+    to {
+        opacity:1;
+        transform:translateY(-50%);
+    }
+}
+
+.slide-indicators {
+    position:absolute;
+    bottom:22px;
+    right:30px;
+    z-index:5;
+    display:flex;
+    gap:8px;
+}
+
+.indicator {
+    width:23px;
+    height:4px;
+    border:0;
+    background:rgba(255,255,255,.5);
+    cursor:pointer;
+    border-radius:5px;
+}
+
+.indicator.active {
+    background:var(--primary);
+    width:35px;
+}
+
+/* SHOP INTRO */
+
+.shop-container {
+    padding:45px 7% 65px;
+}
+
+.section-heading {
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+
+.section-heading h2 {
+    font-family:'Outfit',sans-serif;
+    font-size:30px;
+    letter-spacing:-1px;
+}
+
+.section-heading p {
+    color:var(--gray);
+    font-size:13px;
+    margin-top:8px;
+}
+
+/* TOOLBAR */
+
+.toolbar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:18px 0;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    margin-bottom:28px;
+}
+
+.result-count {
+    font-size:13px;
+    color:var(--gray);
+}
+
+.toolbar-right {
+    display:flex;
+    gap:12px;
+}
+
+.search-box,
+.sort-select {
+    padding:11px 13px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    outline:none;
+    font-size:12px;
+    background:white;
+}
+
+.search-box {
+    width:230px;
+}
+
+.search-box:focus,
+.sort-select:focus {
+    border-color:var(--primary);
+}
+
+/* PRODUCT GRID */
+
+.products {
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:30px 20px;
+}
+
+.product-card {
+    min-width:0;
+}
+
+.product-image {
+    height:270px;
+    background:#f5f5f5;
+    border-radius:6px;
+    position:relative;
+    overflow:hidden;
+}
+
+.product-image img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.product-card:hover .product-image img {
+    transform:scale(1.06);
+}
+
+.product-tag {
+    position:absolute;
+    top:12px;
+    left:12px;
+    background:white;
+    padding:6px 10px;
+    font-size:10px;
+    font-weight:700;
+    z-index:2;
+    border-radius:3px;
+}
+
+.product-info {
+    padding:14px 2px;
+}
+
+.product-category {
+    color:var(--gray);
+    font-size:10px;
+    margin-bottom:7px;
+    letter-spacing:.5px;
+}
+
+.product-info h3 {
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.price {
+    font-size:15px;
+    font-weight:800;
+}
+
+.old-price {
+    font-size:12px;
+    color:#999;
+    text-decoration:line-through;
+    margin-left:6px;
+}
+
+.add-btn {
+    width:100%;
+    margin-top:13px;
+    padding:12px;
+    border:1px solid var(--dark);
+    background:white;
+    color:var(--dark);
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.add-btn:hover {
+    background:var(--dark);
+    color:white;
+}
+
+.add-btn:disabled {
+    opacity:.65;
+    cursor:default;
+}
+
+/* EMPTY STATE */
+
+.empty-state {
+    grid-column:1/-1;
+    text-align:center;
+    padding:70px 20px;
+    display:none;
+}
+
+.empty-state h3 {
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.empty-state p {
+    font-size:13px;
+    color:var(--gray);
+}
+
+/* FOOTER */
+
+footer {
+    background:#171717;
+    color:white;
+    padding:50px 7% 25px;
+}
+
+.footer-content {
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:30px;
+    padding-bottom:35px;
+}
+
+.footer-brand p {
+    color:#aaa;
+    font-size:12px;
+    line-height:1.8;
+    max-width:260px;
+    margin-top:15px;
+}
+
+.footer-column h4 {
+    font-size:14px;
+    margin-bottom:18px;
+}
+
+.footer-column a {
+    display:block;
+    color:#aaa;
+    font-size:12px;
+    margin-bottom:12px;
+}
+
+.footer-column a:hover {
+    color:var(--primary);
+}
+
+.copyright {
+    border-top:1px solid #333;
+    padding-top:20px;
+    text-align:center;
+    font-size:11px;
+    color:#999;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px) {
+    header {
+        padding:0 4%;
+    }
+
+    .collection-hero {
+        margin:22px 4%;
+        height:340px;
+    }
+
+    .shop-container {
+        padding-left:4%;
+        padding-right:4%;
+    }
+
+    .products {
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+}
+
+@media(max-width:650px) {
+    header {
+        height:70px;
+    }
+
+    .logo {
+        font-size:25px;
+    }
+
+    .header-actions {
+        gap:14px;
+    }
+
+    .header-actions .account-link {
+        display:none;
+    }
+
+    .collection-hero {
+        margin:16px 4%;
+        height:370px;
+    }
+
+    .hero-text {
+        left:7%;
+        right:7%;
+    }
+
+    .hero-text h1 {
+        font-size:39px;
+    }
+
+    .hero-text p {
+        font-size:12px;
+    }
+
+    .slide-indicators {
+        right:18px;
+        bottom:17px;
+    }
+
+    .shop-container {
+        padding:35px 4% 50px;
+    }
+
+    .section-heading h2 {
+        font-size:25px;
+    }
+
+    .toolbar {
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .toolbar-right {
+        width:100%;
+    }
+
+    .search-box {
+        flex:1;
+        min-width:0;
+    }
+
+    .sort-select {
+        max-width:145px;
+    }
+
+    .products {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:22px 12px;
+    }
+
+    .product-image {
+        height:190px;
+    }
+
+    .product-info h3 {
+        font-size:12px;
+    }
+
+    footer {
+        padding:40px 5% 20px;
+    }
+
+    .footer-content {
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .footer-brand {
+        grid-column:span 2;
+    }
+}
+
+@media(max-width:370px) {
+    .product-image {
+        height:160px;
+    }
+
+    .sort-select {
+        max-width:125px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ANNOUNCEMENT -->
+
+<div class="announcement">
+    FREE SHIPPING ON ORDERS ABOVE <span>₹999</span> | SHOP NOW
+</div>
+
+<!-- HEADER -->
+
+<header>
+
+    <a href="index.html" class="logo">AMA<span>KART.</span></a>
+
+    <div class="header-actions">
+
+        <a href="login.html" class="account-link">Account</a>
+
+        <a href="cart.html" class="cart">
+            🛒 <span class="cart-count" id="cartCount">0</span>
+        </a>
+
+        <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+<!-- HAMBURGER MENU -->
+
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+<aside class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+        <a href="index.html" class="logo">AMA<span>KART.</span></a>
+        <button class="close-menu" onclick="toggleMenu()">×</button>
+    </div>
+
+    <div class="menu-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="index.html#new-arrivals">New Arrivals</a>
+        <a href="login.html">My Account</a>
+        <a href="cart.html">My Cart</a>
+        <a href="index.html#footer">Contact</a>
+    </div>
+
+    <div class="menu-categories">
+
+        <h4>SHOP BY CATEGORY</h4>
+
+        <a href="shop.html?category=all">All Products</a>
+        <a href="shop.html?category=tshirt">T-Shirts</a>
+        <a href="shop.html?category=hoodie">Hoodies</a>
+        <a href="shop.html?category=jacket">Jackets</a>
+        <a href="shop.html?category=cap">Caps</a>
+        <a href="shop.html?category=kids">Kids Clothing</a>
+        <a href="shop.html?category=frame">Acrylic Photo Frames</a>
+
+    </div>
+
+</aside>
+
+<!-- COLLECTION SLIDESHOW -->
+
+<section class="collection-hero" id="collectionHero">
+
+    <div class="slide active">
+        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400" alt="Fashion collection">
+    </div>
+
+    <div class="slide">
+        <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=1400" alt="Clothing collection">
+    </div>
+
+    <div class="slide">
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1400" alt="Shopping collection">
+    </div>
+
+    <div class="slide">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1400" alt="Latest fashion">
+    </div>
+
+    <div class="hero-text" id="heroText">
+
+        <div class="eyebrow">WELCOME TO AMAKART</div>
+
+        <h1>Explore Our Collection.</h1>
+
+        <p>
+            Discover your style. Find products you love
+            and enjoy a better shopping experience.
+        </p>
+
+        <a href="#products" class="hero-btn">SHOP COLLECTION →</a>
+
+    </div>
+
+    <div class="slide-indicators">
+
+        <button class="indicator active" data-slide="0" aria-label="Slide 1"></button>
+        <button class="indicator" data-slide="1" aria-label="Slide 2"></button>
+        <button class="indicator" data-slide="2" aria-label="Slide 3"></button>
+        <button class="indicator" data-slide="3" aria-label="Slide 4"></button>
+
+    </div>
+
+</section>
+
+<!-- SHOP CONTENT -->
+
+<main class="shop-container" id="products">
+
+    <div class="section-heading">
+        <div>
+            <h2>Our Products</h2>
+            <p>Discover something you'll love.</p>
+        </div>
+    </div>
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+        <div class="result-count">
+            Showing <span id="resultCount">12</span> products
+        </div>
+
+        <div class="toolbar-right">
+
+            <input
+                type="search"
+                class="search-box"
+                id="searchInput"
+                placeholder="Search products..."
+            >
+
+            <select class="sort-select" id="sortSelect">
+                <option value="default">Default sorting</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+            </select>
+
+        </div>
+
+    </div>
+
+    <!-- PRODUCT GRID -->
+
+    <div class="products" id="productGrid">
+
+        <div class="empty-state" id="emptyState">
+            <h3>No products found</h3>
+            <p>Try another category or search term.</p>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer id="footer">
+
+    <div class="footer-content">
+
+        <div class="footer-brand">
+            <a href="index.html" class="logo">AMA<span>KART.</span></a>
+
+            <p>
+                Your online shopping destination.
+                Discover quality products and enjoy
+                a simple shopping experience.
+            </p>
+        </div>
+
+        <div class="footer-column">
+            <h4>Shop</h4>
+            <a href="shop.html">All Products</a>
+            <a href="shop.html?category=tshirt">T-Shirts</a>
+            <a href="shop.html?category=hoodie">Hoodies</a>
+            <a href="shop.html?category=frame">Photo Frames</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>Account</h4>
+            <a href="login.html">My Account</a>
+            <a href="cart.html">My Cart</a>
+            <a href="orders.html">My Orders</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>Help</h4>
+            <a href="#">Contact Us</a>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Return Policy</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 AMAKART. All Rights Reserved.
+    </div>
+
+</footer>
+
+<script>
+
+/* PRODUCT DATA */
+
+const products = [
+
+    {
+        id:1,
+        name:"Classic Cotton T-Shirt",
+        category:"tshirt",
+        price:499,
+        oldPrice:699,
+        image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+        tag:"BESTSELLER"
+    },
+
+    {
+        id:2,
+        name:"Premium Graphic T-Shirt",
+        category:"tshirt",
+        price:599,
+        oldPrice:799,
+        image:"https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600",
+        tag:"NEW"
+    },
+
+    {
+        id:3,
+        name:"Oversized Streetwear T-Shirt",
+        category:"tshirt",
+        price:649,
+        oldPrice:899,
+        image:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600",
+        tag:"SALE"
+    },
+
+    {
+        id:4,
+        name:"Premium Casual Hoodie",
+        category:"hoodie",
+        price:899,
+        oldPrice:1199,
+        image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600",
+        tag:"POPULAR"
+    },
+
+    {
+        id:5,
+        name:"Classic Pullover Hoodie",
+        category:"hoodie",
+        price:999,
+        oldPrice:1299,
+        image:"https://images.unsplash.com/photo-1578681994506-b8f463449011?w=600",
+        tag:"NEW"
+    },
+
+    {
+        id:6,
+        name:"Casual Street Jacket",
+        category:"jacket",
+        price:1499,
+        oldPrice:1899,
+        image:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600",
+        tag:"SALE"
+    },
+
+    {
+        id:7,
+        name:"Classic Baseball Cap",
+        category:"cap",
+        price:299,
+        oldPrice:399,
+        image:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600",
+        tag:"POPULAR"
+    },
+
+    {
+        id:8,
+        name:"Streetwear Snapback Cap",
+        category:"cap",
+        price:349,
+        oldPrice:499,
+        image:"https://images.unsplash.com/photo-1521369909029-2afed882baee?w=600",
+        tag:"NEW"
+    },
+
+    {
+        id:9,
+        name:"Kids Casual Outfit",
+        category:"kids",
+        price:599,
+        oldPrice:799,
+        image:"https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=600",
+        tag:"NEW"
+    },
+
+    {
+        id:10,
+        name:"Kids Everyday Clothing",
+        category:"kids",
+        price:699,
+        oldPrice:899,
+        image:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600",
+        tag:"POPULAR"
+    },
+
+    {
+        id:11,
+        name:"Acrylic Photo Frame with Stand",
+        category:"frame",
+        price:399,
+        oldPrice:599,
+        image:"https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600",
+        tag:"SPECIAL"
+    },
+
+    {
+        id:12,
+        name:"Premium Photo Display Frame",
+        category:"frame",
+        price:499,
+        oldPrice:699,
+        image:"https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=600",
+        tag:"NEW"
+    }
+
+];
+
+/* FILTER STATE */
+
+let currentCategory = "all";
+let searchTerm = "";
+let sortType = "default";
+
+/* RENDER PRODUCTS */
+
+function renderProducts() {
+
+    let filtered = products.filter(product => {
+
+        const categoryMatch =
+            currentCategory === "all" ||
+            product.category === currentCategory;
+
+        const searchMatch =
+            product.name.toLowerCase().includes(searchTerm);
+
+        return categoryMatch && searchMatch;
+
+    });
+
+    if(sortType === "low") {
+        filtered.sort((a,b) => a.price - b.price);
+    }
+
+    if(sortType === "high") {
+        filtered.sort((a,b) => b.price - a.price);
+    }
+
+    if(sortType === "name") {
+        filtered.sort((a,b) => a.name.localeCompare(b.name));
+    }
+
+    const grid = document.getElementById("productGrid");
+    const empty = document.getElementById("emptyState");
+
+    grid.querySelectorAll(".product-card").forEach(card => card.remove());
+
+    document.getElementById("resultCount").textContent = filtered.length;
+
+    empty.style.display = filtered.length ? "none" : "block";
+
+    filtered.forEach(product => {
+
+        const card = document.createElement("div");
+
+        card.className = "product-card";
+
+        card.innerHTML = `
+
+            <a href="product.html?id=${product.id}">
+
+                <div class="product-image">
+
+                    <span class="product-tag">${product.tag}</span>
+
+                    <img src="${product.image}"
+                         alt="${product.name}"
+                         loading="lazy">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        ${product.category.toUpperCase()}
+                    </div>
+
+                    <h3>${product.name}</h3>
+
+                    <span class="price">₹${product.price}</span>
+
+                    <span class="old-price">
+                        ₹${product.oldPrice}
+                    </span>
+
+                </div>
+
+            </a>
+
+            <button class="add-btn" data-add="${product.id}">
+                ADD TO CART +
+            </button>
+
+        `;
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+/* ADD TO CART */
+
+function addToCart(productId) {
+
+    const product = products.find(p => p.id === Number(productId));
+
+    if(!product) return;
+
+    let cart = JSON.parse(localStorage.getItem("amakartCart") || "[]");
+
+    const existing = cart.find(item => Number(item.id) === product.id);
+
+    if(existing) {
+        existing.quantity = (Number(existing.quantity) || 1) + 1;
+    } else {
+        cart.push({
+            ...product,
+            quantity:1
+        });
+    }
+
+    localStorage.setItem("amakartCart",JSON.stringify(cart));
+
+    updateCartCount();
+
+    const button = document.querySelector(`[data-add="${productId}"]`);
+
+    if(button) {
+        button.textContent = "ADDED ✓";
+        button.disabled = true;
+
+        setTimeout(() => {
+            button.textContent = "ADD TO CART +";
+            button.disabled = false;
+        },1200);
+    }
+
+}
+
+/* CART EVENT */
+
+document.getElementById("productGrid").addEventListener("click", event => {
+
+    const button = event.target.closest("[data-add]");
+
+    if(button) {
+        event.preventDefault();
+        addToCart(button.dataset.add);
+    }
+
+});
+
+/* SEARCH */
+
+document.getElementById("searchInput").addEventListener("input", event => {
+
+    searchTerm = event.target.value.toLowerCase().trim();
+
+    renderProducts();
+
+});
+
+/* SORT */
+
+document.getElementById("sortSelect").addEventListener("change", event => {
+
+    sortType = event.target.value;
+
+    renderProducts();
+
+});
+
+/* CART COUNT */
+
+function updateCartCount() {
+
+    let cart = JSON.parse(localStorage.getItem("amakartCart") || "[]");
+
+    let count = cart.reduce((total,item) => {
+        return total + (Number(item.quantity) || 1);
+    },0);
+
+    document.getElementById("cartCount").textContent = count;
+
+}
+
+/* HAMBURGER MENU */
+
+function toggleMenu() {
+
+    document.getElementById("sideMenu").classList.toggle("active");
+
+    document.getElementById("menuOverlay").classList.toggle("active");
+
+}
+
+/* CATEGORY URL */
+
+const params = new URLSearchParams(window.location.search);
+
+const requestedCategory = params.get("category");
+
+const validCategories = [
+    "all","tshirt","hoodie","jacket","cap","kids","frame"
+];
+
+if(requestedCategory && validCategories.includes(requestedCategory)) {
+    currentCategory = requestedCategory;
+}
+
+/* SLIDESHOW */
+
+const slides = document.querySelectorAll(".slide");
+const indicators = document.querySelectorAll(".indicator");
+
+const heroText = document.getElementById("heroText");
+
+const slideContent = [
+
+    {
+        eyebrow:"WELCOME TO AMAKART",
+        title:"Explore Our Collection.",
+        description:"Discover your style. Find products you love and enjoy a better shopping experience."
+    },
+
+    {
+        eyebrow:"STYLE THAT SPEAKS",
+        title:"Wear Your Style.",
+        description:"Explore our latest T-shirts, hoodies and jackets. Find your everyday favourites."
+    },
+
+    {
+        eyebrow:"NEW ARRIVALS",
+        title:"Something New Awaits.",
+        description:"Discover fresh collections and unique products at AMAKART."
+    },
+
+    {
+        eyebrow:"SHOP YOUR FAVOURITES",
+        title:"Find What You Love.",
+        description:"From fashion to personalised photo frames, explore more at AMAKART."
+    }
+
+];
+
+let currentSlide = 0;
+let slideTimer;
+
+function showSlide(index) {
+
+    currentSlide = index;
+
+    slides.forEach((slide,i) => {
+        slide.classList.toggle("active",i === index);
+    });
+
+    indicators.forEach((indicator,i) => {
+        indicator.classList.toggle("active",i === index);
+    });
+
+    const content = slideContent[index];
+
+    heroText.style.animation = "none";
+    void heroText.offsetWidth;
+    heroText.style.animation = "heroFade 1s ease";
+
+    heroText.innerHTML = `
+
+        <div class="eyebrow">${content.eyebrow}</div>
+
+        <h1>${content.title}</h1>
+
+        <p>${content.description}</p>
+
+        <a href="#products" class="hero-btn">SHOP COLLECTION →</a>
+
+    `;
+
+}
+
+function startSlideshow() {
+
+    clearInterval(slideTimer);
+
+    slideTimer = setInterval(() => {
+
+        let next = (currentSlide + 1) % slides.length;
+
+        showSlide(next);
+
+    },4500);
+
+}
+
+indicators.forEach((indicator,i) => {
+
+    indicator.addEventListener("click", () => {
+
+        showSlide(i);
+        startSlideshow();
+
+    });
+
+});
+
+/* INITIALIZE */
+
+renderProducts();
+updateCartCount();
+
+showSlide(0);
+startSlideshow();
+
+</script>
+
+</body>
+</html>

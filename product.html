@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Details | AMAKART</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #222;
+    background: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+}
+
+.announcement {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+header {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    border-bottom: 1px solid #eee;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.menu-btn {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.header-icons {
+    font-size: 23px;
+}
+
+.cart-count {
+    font-size: 11px;
+    background: #111;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 50%;
+    vertical-align: top;
+}
+
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 200;
+    display: none;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 300px;
+    height: 100%;
+    background: white;
+    z-index: 201;
+    padding: 25px;
+    transition: .3s;
+    overflow-y: auto;
+}
+
+.drawer.active {
+    left: 0;
+}
+
+.drawer-overlay.active {
+    display: block;
+}
+
+.drawer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.drawer h3 {
+    font-size: 20px;
+}
+
+.close-btn {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.drawer a {
+    display: block;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+.breadcrumb {
+    padding: 22px 6%;
+    font-size: 13px;
+    color: #777;
+}
+
+.breadcrumb a {
+    color: #222;
+}
+
+.product-container {
+    max-width: 1200px;
+    margin: 10px auto 80px;
+    padding: 0 6%;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 55px;
+}
+
+.product-image {
+    width: 100%;
+    background: #f5f5f5;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-info {
+    padding-top: 15px;
+}
+
+.category-label {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.product-info h1 {
+    font-size: 30px;
+    line-height: 1.3;
+    margin-bottom: 15px;
+}
+
+.price {
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 22px;
+}
+
+.old-price {
+    font-size: 16px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 10px;
+    font-weight: normal;
+}
+
+.description {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.option-group {
+    margin-bottom: 22px;
+}
+
+.option-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.option-group select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 14px;
+    outline: none;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    width: fit-content;
+    height: 45px;
+}
+
+.quantity-control button {
+    width: 42px;
+    height: 100%;
+    background: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.quantity-control span {
+    width: 35px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.add-cart {
+    width: 100%;
+    padding: 17px;
+    background: #111;
+    color: white;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: .3s;
+}
+
+.add-cart:hover {
+    background: #444;
+}
+
+.add-cart:disabled {
+    background: #888;
+    cursor: not-allowed;
+}
+
+.product-note {
+    font-size: 12px;
+    color: #888;
+    margin-top: 18px;
+    line-height: 1.8;
+}
+
+.not-found {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.not-found a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 13px 25px;
+    background: #111;
+    color: white;
+}
+
+.loading {
+    text-align: center;
+    padding: 100px 20px;
+    color: #777;
+}
+
+footer {
+    background: #111;
+    color: white;
+    padding: 45px 6% 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 35px;
+}
+
+.footer-logo {
+    font-size: 25px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+footer p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+footer h3 {
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+footer a {
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    margin-top: 35px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+@media(max-width: 750px) {
+    header {
+        height: 65px;
+        padding: 0 5%;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .product-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 0 5%;
+        margin-top: 0;
+    }
+
+    .product-info {
+        padding-top: 0;
+    }
+
+    .product-info h1 {
+        font-size: 25px;
+    }
+
+    .breadcrumb {
+        padding: 18px 5%;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-about {
+        grid-column: 1 / -1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">
+    FREE SHIPPING ON SELECTED ORDERS
+</div>
+
+<header>
+    <div class="menu-btn" onclick="openMenu()">☰</div>
+
+    <a href="index.html" class="logo">AMAKART</a>
+
+    <div class="header-icons">
+        <a href="cart.html">🛒<span class="cart-count" id="cartCount">0</span></a>
+    </div>
+</header>
+
+<div class="drawer-overlay" id="overlay" onclick="closeMenu()"></div>
+
+<nav class="drawer" id="drawer">
+    <div class="drawer-top">
+        <h3>AMAKART</h3>
+        <span class="close-btn" onclick="closeMenu()">×</span>
+    </div>
+
+    <a href="index.html">Home</a>
+    <a href="tshirt.html">T-Shirts</a>
+    <a href="hoodie.html">Hoodies</a>
+    <a href="jacket.html">Jackets</a>
+    <a href="cap.html">Caps</a>
+    <a href="kids.html">Kids Clothing</a>
+    <a href="frame.html">Acrylic Photo Frames with Stand</a>
+    <a href="cart.html">My Cart</a>
+    <a href="orders.html">My Orders</a>
+</nav>
+
+<div class="breadcrumb">
+    <a href="index.html">Home</a> /
+    <span id="breadcrumbCategory">Product</span>
+</div>
+
+<div id="loadingMessage" class="loading">
+    Loading product...
+</div>
+
+<div id="productContent" style="display:none;">
+
+    <section class="product-container">
+
+        <div class="product-image">
+            <img id="productImage" src="" alt="Product Image">
+        </div>
+
+        <div class="product-info">
+
+            <div class="category-label" id="productCategory"></div>
+
+            <h1 id="productName">Product Name</h1>
+
+            <div class="price">
+                <span id="productPrice"></span>
+                <span class="old-price" id="oldPrice"></span>
+            </div>
+
+            <p class="description" id="productDescription"></p>
+
+            <div class="option-group" id="sizeGroup">
+                <label for="sizeSelect">SELECT SIZE</label>
+                <select id="sizeSelect">
+                    <option value="">Choose Size</option>
+                </select>
+            </div>
+
+            <div class="option-group" id="colorGroup">
+                <label for="colorSelect">SELECT COLOUR</label>
+                <select id="colorSelect">
+                    <option value="">Choose Colour</option>
+                </select>
+            </div>
+
+            <div class="option-group">
+                <label>QUANTITY</label>
+
+                <div class="quantity-control">
+                    <button type="button" onclick="changeQuantity(-1)">−</button>
+                    <span id="quantity">1</span>
+                    <button type="button" onclick="changeQuantity(1)">+</button>
+                </div>
+            </div>
+
+            <button class="add-cart" id="addCartButton" onclick="addToCart()">
+                ADD TO CART
+            </button>
+
+            <p class="product-note">
+                Secure shopping experience.<br>
+                Product details and availability can be updated by the store.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+<div class="not-found" id="notFound" style="display:none;">
+    <h2 id="notFoundTitle">Product Not Found</h2>
+    <p id="notFoundMessage">Sorry, this product is not available.</p>
+    <a href="index.html">Continue Shopping</a>
+</div>
+
+<footer>
+    <div class="footer-content">
+
+        <div class="footer-about">
+            <div class="footer-logo">AMAKART</div>
+            <p>Your style, your memories, your choice.</p>
+        </div>
+
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="tshirt.html">T-Shirts</a>
+            <a href="hoodie.html">Hoodies</a>
+            <a href="jacket.html">Jackets</a>
+            <a href="cap.html">Caps</a>
+            <a href="frame.html">Photo Frames</a>
+        </div>
+
+        <div>
+            <h3>Customer Service</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="orders.html">My Orders</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="refund.html">Refund Policy</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 AMAKART. All Rights Reserved.
+    </div>
+</footer>
+
+<script type="module">
+
+// FIREBASE IMPORTS
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+
+// FIREBASE CONFIG
+const firebaseConfig = {
+    apiKey: "AIzaSyCE6aA53b9MszdFAl-KoU3_DDJXejIjQ4k",
+    authDomain: "amakart-4a249.firebaseapp.com",
+    projectId: "amakart-4a249",
+    storageBucket: "amakart-4a249.firebasestorage.app",
+    messagingSenderId: "399156555540",
+    appId: "1:399156555540:web:a03bc77ab75402cb52dc01",
+    measurementId: "G-HKTQ1JVF82"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+// GLOBAL VARIABLES
+let product = null;
+let productId = null;
+let quantity = 1;
+
+
+// CATEGORY DISPLAY NAMES
+const categoryNames = {
+    tshirt: "T-Shirts",
+    hoodie: "Hoodies",
+    jacket: "Jackets",
+    cap: "Caps",
+    kids: "Kids Clothing",
+    frame: "Acrylic Photo Frames"
+};
+
+
+// CLOTHING CATEGORIES
+const clothingCategories = [
+    "tshirt",
+    "hoodie",
+    "jacket",
+    "kids"
+];
+
+
+// MENU
+window.openMenu = function () {
+    document.getElementById("drawer").classList.add("active");
+    document.getElementById("overlay").classList.add("active");
+};
+
+window.closeMenu = function () {
+    document.getElementById("drawer").classList.remove("active");
+    document.getElementById("overlay").classList.remove("active");
+};
+
+
+// GET PRODUCT ID FROM URL
+const params = new URLSearchParams(window.location.search);
+productId = params.get("id");
+
+
+// LOAD PRODUCT FROM FIRESTORE
+async function loadProduct() {
+
+    const loading = document.getElementById("loadingMessage");
+    const content = document.getElementById("productContent");
+    const notFound = document.getElementById("notFound");
+
+    if (!productId) {
+        showNotFound("Product ID is missing.");
+        return;
+    }
+
+    try {
+
+        const productRef = doc(db, "products", productId);
+        const productSnapshot = await getDoc(productRef);
+
+        if (!productSnapshot.exists()) {
+            showNotFound("This product could not be found.");
+            return;
+        }
+
+        product = {
+            id: productSnapshot.id,
+            ...productSnapshot.data()
+        };
+
+        // Check active status
+        if (product.active === false) {
+            showNotFound("This product is currently unavailable.");
+            return;
+        }
+
+        // HIDE LOADING
+        loading.style.display = "none";
+        notFound.style.display = "none";
+        content.style.display = "block";
+
+        renderProduct();
+
+    } catch (error) {
+
+        console.error("Product loading error:", error);
+
+        showNotFound(
+            "Unable to load this product. Please check your internet connection or Firestore access."
+        );
+    }
+}
+
+
+// SHOW PRODUCT NOT FOUND
+function showNotFound(message) {
+
+    document.getElementById("loadingMessage").style.display = "none";
+    document.getElementById("productContent").style.display = "none";
+    document.getElementById("notFound").style.display = "block";
+
+    document.getElementById("notFoundMessage").textContent = message;
+}
+
+
+// RENDER PRODUCT DETAILS
+function renderProduct() {
+
+    const categoryKey = String(product.category || "").toLowerCase();
+
+    const category =
+        categoryNames[categoryKey] ||
+        product.category ||
+        "AMAKART";
+
+    const isClothing = clothingCategories.includes(categoryKey);
+
+    // IMAGE
+    const image = document.getElementById("productImage");
+
+    image.src = product.image || "";
+    image.alt = product.name || "AMAKART Product";
+
+    image.onerror = function () {
+        this.style.display = "none";
+    };
+
+    // PRODUCT NAME
+    document.getElementById("productName").textContent =
+        product.name || "Product";
+
+    // CATEGORY
+    document.getElementById("productCategory").textContent = category;
+    document.getElementById("breadcrumbCategory").textContent = category;
+
+    // PRICE
+    document.getElementById("productPrice").textContent =
+        "₹" + Number(product.price || 0).toLocaleString("en-IN");
+
+    // OLD PRICE - only if the field exists
+    const oldPrice = document.getElementById("oldPrice");
+
+    if (product.originalPrice && Number(product.originalPrice) > Number(product.price)) {
+        oldPrice.textContent =
+            "₹" + Number(product.originalPrice).toLocaleString("en-IN");
+        oldPrice.style.display = "inline";
+    } else {
+        oldPrice.style.display = "none";
+    }
+
+    // DESCRIPTION
+    document.getElementById("productDescription").textContent =
+        product.description ||
+        "Discover the " + (product.name || "product") +
+        " from AMAKART. Explore this product and add it to your shopping cart.";
+
+    // PAGE TITLE
+    document.title = (product.name || "Product") + " | AMAKART";
+
+    // SIZE AND COLOUR OPTIONS
+    if (isClothing) {
+
+        document.getElementById("sizeGroup").style.display = "block";
+        document.getElementById("colorGroup").style.display = "block";
+
+        populateSelect(
+            "sizeSelect",
+            product.sizes || [],
+            "Choose Size"
+        );
+
+        populateSelect(
+            "colorSelect",
+            product.colors || [],
+            "Choose Colour"
+        );
+
+    } else {
+
+        document.getElementById("sizeGroup").style.display = "none";
+        document.getElementById("colorGroup").style.display = "none";
+
+    }
+
+    // STOCK
+    if (Number(product.stock) <= 0 && product.stock !== undefined) {
+        const button = document.getElementById("addCartButton");
+        button.disabled = true;
+        button.textContent = "OUT OF STOCK";
+    }
+}
+
+
+// POPULATE SIZE AND COLOUR SELECT
+function populateSelect(elementId, values, placeholder) {
+
+    const select = document.getElementById(elementId);
+
+    select.innerHTML = "";
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = placeholder;
+
+    select.appendChild(defaultOption);
+
+    if (!Array.isArray(values)) return;
+
+    values.forEach(value => {
+
+        const option = document.createElement("option");
+
+        option.value = value;
+        option.textContent = value;
+
+        select.appendChild(option);
+
+    });
+}
+
+
+// QUANTITY
+window.changeQuantity = function (amount) {
+
+    quantity += amount;
+
+    if (quantity < 1) {
+        quantity = 1;
+    }
+
+    document.getElementById("quantity").textContent = quantity;
+};
+
+
+// CART COUNT
+function updateCartCount() {
+
+    const cart = JSON.parse(localStorage.getItem("amakartCart")) || [];
+
+    const total = cart.reduce((sum, item) => {
+        return sum + (Number(item.quantity) || 1);
+    }, 0);
+
+    document.getElementById("cartCount").textContent = total;
+}
+
+
+// ADD TO CART
+window.addToCart = function () {
+
+    if (!product) return;
+
+    const categoryKey = String(product.category || "").toLowerCase();
+
+    const isClothing = clothingCategories.includes(categoryKey);
+
+    const size = isClothing
+        ? document.getElementById("sizeSelect").value
+        : "";
+
+    const color = isClothing
+        ? document.getElementById("colorSelect").value
+        : "";
+
+
+    // SIZE VALIDATION
+    if (isClothing && Array.isArray(product.sizes) &&
+        product.sizes.length > 0 && !size) {
+
+        alert("Please select a size.");
+        return;
+    }
+
+    // COLOUR VALIDATION
+    if (isClothing && Array.isArray(product.colors) &&
+        product.colors.length > 0 && !color) {
+
+        alert("Please select a colour.");
+        return;
+    }
+
+
+    // GET CART
+    let cart = [];
+
+    try {
+        cart = JSON.parse(localStorage.getItem("amakartCart")) || [];
+    } catch (error) {
+        cart = [];
+    }
+
+
+    // CHECK EXISTING PRODUCT
+    const existingItem = cart.find(item =>
+        String(item.id) === String(productId) &&
+        item.size === size &&
+        item.color === color
+    );
+
+
+    if (existingItem) {
+
+        existingItem.quantity =
+            (Number(existingItem.quantity) || 0) + quantity;
+
+    } else {
+
+        cart.push({
+            id: product.id,
+            name: product.name || "",
+            category: product.category || "",
+            price: Number(product.price || 0),
+            image: product.image || "",
+            size: size,
+            color: color,
+            quantity: quantity
+        });
+
+    }
+
+
+    // SAVE CART
+    localStorage.setItem("amakartCart", JSON.stringify(cart));
+
+    updateCartCount();
+
+    alert("Product added to cart!");
+
+};
+
+
+// INITIALIZE
+updateCartCount();
+loadProduct();
+
+</script>
+
+</body>
+</html>

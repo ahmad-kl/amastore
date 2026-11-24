@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed | AMAKART</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#fff;color:#222}
+a{text-decoration:none;color:inherit}
+.announcement{background:#111;color:white;text-align:center;padding:10px;font-size:12px;letter-spacing:1px}
+header{height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #eee}
+.logo{font-size:27px;font-weight:900;letter-spacing:2px}
+.header-icons{font-size:22px}
+.cart-count{font-size:11px;background:#111;color:white;padding:3px 6px;border-radius:50%;vertical-align:top}
+.success-container{max-width:850px;margin:55px auto 80px;padding:0 20px}
+.success-header{text-align:center;padding:30px 15px 40px;border-bottom:1px solid #eee}
+.success-icon{width:75px;height:75px;border-radius:50%;background:#e8f6ed;color:#218849;display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 25px}
+.success-header h1{font-size:30px;margin-bottom:12px}
+.success-header p{color:#777;font-size:14px;line-height:1.7}
+.order-id-box{background:#f8f8f8;padding:20px;margin:30px 0;text-align:center}
+.order-id-box p{color:#888;font-size:12px;margin-bottom:8px;letter-spacing:1px}
+.order-id-box h2{font-size:20px;letter-spacing:1px}
+.details-section{margin-top:35px}
+.details-section h2{font-size:19px;margin-bottom:20px}
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+.detail-box{border:1px solid #eee;padding:20px}
+.detail-box h3{font-size:14px;margin-bottom:15px}
+.detail-box p{font-size:13px;color:#777;line-height:1.8;overflow-wrap:anywhere}
+.product-item{display:flex;align-items:center;gap:15px;padding:16px 0;border-bottom:1px solid #eee}
+.product-item img{width:75px;height:85px;object-fit:cover;background:#f5f5f5}
+.product-info{flex:1}
+.product-info h3{font-size:14px;margin-bottom:7px}
+.product-info p{color:#888;font-size:12px;margin-bottom:5px}
+.product-price{font-size:13px;font-weight:bold;white-space:nowrap}
+.total-section{border-top:1px solid #ddd;margin-top:20px;padding-top:20px}
+.total-row{display:flex;justify-content:space-between;font-size:15px;font-weight:bold}
+.order-status{background:#fff8e8;border:1px solid #f2e4c5;padding:18px;margin-top:30px}
+.order-status h3{font-size:14px;margin-bottom:8px}
+.order-status p{color:#777;font-size:13px;line-height:1.7}
+.status-pill{display:inline-block;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:bold;background:#fff0ce;color:#805b00;margin-bottom:10px}
+.status-pill.confirmed{background:#e8f6ed;color:#218849}
+.status-pill.shipped{background:#e8f0ff;color:#2456a6}
+.status-pill.completed{background:#e8f6ed;color:#218849}
+.status-pill.rejected{background:#ffeded;color:#a32121}
+.action-buttons{display:flex;justify-content:center;gap:15px;margin-top:40px;flex-wrap:wrap}
+.action-buttons a{padding:15px 25px;font-size:12px;font-weight:bold;letter-spacing:1px;text-align:center}
+.primary-btn{background:#111;color:white}
+.secondary-btn{border:1px solid #222}
+.no-order{text-align:center;padding:100px 20px}
+.no-order h2{margin-bottom:12px}
+.no-order p{color:#888;font-size:14px}
+.no-order a{display:inline-block;margin-top:25px;padding:14px 25px;background:#111;color:white;font-size:12px}
+footer{background:#111;color:white;padding:45px 6% 20px}
+.footer-content{display:grid;grid-template-columns:2fr 1fr 1fr;gap:35px}
+.footer-logo{font-size:25px;font-weight:900;margin-bottom:15px}
+footer p{color:#aaa;font-size:13px;line-height:1.8}
+footer h3{margin-bottom:15px;font-size:15px}
+footer a{display:block;color:#aaa;font-size:13px;margin-bottom:12px}
+.footer-bottom{border-top:1px solid #333;margin-top:35px;padding-top:20px;text-align:center;font-size:12px;color:#888}
+@media(max-width:600px){
+header{height:65px;padding:0 5%}
+.logo{font-size:22px}
+.success-container{margin-top:25px;padding:0 5%}
+.success-header h1{font-size:25px}
+.details-grid{grid-template-columns:1fr;gap:15px}
+.product-item img{width:65px;height:75px}
+.footer-content{grid-template-columns:1fr 1fr}
+.footer-about{grid-column:1/-1}
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">THANK YOU FOR SHOPPING WITH AMAKART</div>
+
+<header>
+    <a href="index.html" class="logo">AMAKART</a>
+    <div class="header-icons">
+        <a href="cart.html">🛒<span class="cart-count" id="cartCount">0</span></a>
+    </div>
+</header>
+
+<div id="successContent" style="display:none">
+<main class="success-container">
+
+    <section class="success-header">
+        <div class="success-icon">✓</div>
+        <h1>Thank You for Your Order!</h1>
+        <p>
+            Your order has been placed successfully.<br>
+            Thank you for choosing AMAKART.
+        </p>
+    </section>
+
+    <div class="order-id-box">
+        <p>YOUR ORDER NUMBER</p>
+        <h2 id="orderId">AMA000000</h2>
+    </div>
+
+    <section class="details-section">
+        <h2>Order Details</h2>
+        <div class="details-grid">
+            <div class="detail-box">
+                <h3>Delivery Information</h3>
+                <p id="customerDetails"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Order Information</h3>
+                <p id="orderDetails"></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="details-section">
+        <h2>Ordered Products</h2>
+        <div id="orderedProducts"></div>
+        <div class="total-section">
+            <div class="total-row">
+                <span>Total Amount</span>
+                <span id="orderTotal">₹0</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="order-status">
+        <span class="status-pill" id="statusPill">Pending</span>
+        <h3 id="statusHeading">Order Pending</h3>
+        <p id="statusMessage">
+            Your order is waiting for payment verification.
+        </p>
+    </div>
+
+    <div class="action-buttons">
+        <a href="index.html" class="primary-btn">CONTINUE SHOPPING</a>
+        <a href="orders.html" class="secondary-btn">MY ORDERS</a>
+    </div>
+
+</main>
+</div>
+
+<div class="no-order" id="noOrder" style="display:none">
+    <h2>No Order Found</h2>
+    <p>We couldn't find a recent order in this browser.</p>
+    <a href="index.html">GO TO SHOP</a>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-about">
+            <div class="footer-logo">AMAKART</div>
+            <p>Your style, your memories, your choice.</p>
+        </div>
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="tshirt.html">T-Shirts</a>
+            <a href="hoodie.html">Hoodies</a>
+            <a href="jacket.html">Jackets</a>
+            <a href="cap.html">Caps</a>
+            <a href="frame.html">Photo Frames</a>
+        </div>
+        <div>
+            <h3>Customer Service</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="orders.html">My Orders</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="refund.html">Refund Policy</a>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 AMAKART. All Rights Reserved.</div>
+</footer>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCEaA53b9MszdFAl-KoU3_DDJXejIjQ4k",
+    authDomain: "amakart-4a249.firebaseapp.com",
+    projectId: "amakart-4a249",
+    storageBucket: "amakart-4a249.firebasestorage.app",
+    messagingSenderId: "399156555540",
+    appId: "1:399156555540:web:a03bc77ab75402cb52dc01",
+    measurementId: "G-HKTQ1JVF82"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function formatPrice(price) {
+    return "₹" + Number(price || 0).toLocaleString("en-IN");
+}
+
+function updateCartCount() {
+    let cart = [];
+
+    try {
+        cart = JSON.parse(localStorage.getItem("amakartCart")) || [];
+    } catch {}
+
+    const count = cart.reduce(
+        (sum, item) => sum + Number(item.quantity || 1), 0
+    );
+
+    document.getElementById("cartCount").textContent = count;
+}
+
+function getStatusInfo(status) {
+
+    const value = String(status || "Pending").toLowerCase();
+
+    if (value === "completed") {
+        return {
+            title: "Order Completed",
+            message: "Your order has been completed successfully. Thank you for shopping with AMAKART.",
+            className: "completed",
+            label: "Completed"
+        };
+    }
+
+    if (value === "shipped") {
+        return {
+            title: "Order Shipped",
+            message: "Your order has been shipped and is on its way.",
+            className: "shipped",
+            label: "Shipped"
+        };
+    }
+
+    if (value === "confirmed") {
+        return {
+            title: "Order Confirmed",
+            message: "Your order has been confirmed and is being processed.",
+            className: "confirmed",
+            label: "Confirmed"
+        };
+    }
+
+    if (value.includes("reject")) {
+        return {
+            title: "Payment Rejected",
+            message: "Your payment could not be verified. Please contact AMAKART support.",
+            className: "rejected",
+            label: "Payment Rejected"
+        };
+    }
+
+    return {
+        title: "Order Pending",
+        message: "Your order is waiting for payment verification.",
+        className: "",
+        label: "Pending"
+    };
+}
+
+function updateStatus(status) {
+
+    const info = getStatusInfo(status);
+
+    const pill = document.getElementById("statusPill");
+    pill.textContent = info.label;
+    pill.className = "status-pill " + info.className;
+
+    document.getElementById("statusHeading").textContent = info.title;
+    document.getElementById("statusMessage").textContent = info.message;
+    document.getElementById("orderStatusText").textContent = status || "Pending";
+}
+
+function displayOrder(order) {
+
+    document.getElementById("successContent").style.display = "block";
+    document.getElementById("noOrder").style.display = "none";
+
+    document.getElementById("orderId").textContent = order.orderId;
+
+    const customer = order.customer || {};
+
+    document.getElementById("customerDetails").innerHTML = `
+        <strong>${escapeHTML(customer.name)}</strong><br>
+        ${escapeHTML(customer.phone)}<br>
+        ${customer.email ? escapeHTML(customer.email) + "<br>" : ""}
+        ${escapeHTML(customer.address)}<br>
+        ${escapeHTML(customer.city)}, ${escapeHTML(customer.district)}<br>
+        ${escapeHTML(customer.state)} - ${escapeHTML(customer.pincode)}<br>
+        ${customer.landmark ? "Landmark: " + escapeHTML(customer.landmark) : ""}
+    `;
+
+    const date = new Date(order.createdAt);
+
+    document.getElementById("orderDetails").innerHTML = `
+        <strong>Order ID:</strong> ${escapeHTML(order.orderId)}<br>
+        <strong>Date:</strong> ${isNaN(date.getTime()) ? "N/A" : date.toLocaleDateString("en-IN")}<br>
+        <strong>Status:</strong> <span id="orderStatusText">${escapeHTML(order.status || "Pending")}</span><br>
+        <strong>Payment:</strong> ${escapeHTML(order.paymentStatus || "Verification Pending")}
+    `;
+
+    const products = document.getElementById("orderedProducts");
+    products.innerHTML = "";
+
+    (order.items || []).forEach(item => {
+
+        const quantity = Number(item.quantity) || 1;
+        const price = Number(item.price) || 0;
+
+        const options = [];
+        if (item.size) options.push("Size: " + item.size);
+        if (item.color) options.push("Colour: " + item.color);
+
+        const product = document.createElement("div");
+        product.className = "product-item";
+
+        const img = document.createElement("img");
+        img.src = item.image || "";
+        img.alt = item.name || "Product";
+
+        const info = document.createElement("div");
+        info.className = "product-info";
+
+        const name = document.createElement("h3");
+        name.textContent = item.name || "Product";
+
+        const quantityText = document.createElement("p");
+        quantityText.textContent = "Quantity: " + quantity;
+
+        info.appendChild(name);
+        info.appendChild(quantityText);
+
+        if (options.length) {
+            const optionText = document.createElement("p");
+            optionText.textContent = options.join(" | ");
+            info.appendChild(optionText);
+        }
+
+        const amount = document.createElement("div");
+        amount.className = "product-price";
+        amount.textContent = formatPrice(price * quantity);
+
+        product.appendChild(img);
+        product.appendChild(info);
+        product.appendChild(amount);
+
+        products.appendChild(product);
+    });
+
+    document.getElementById("orderTotal").textContent =
+        formatPrice(order.total ?? order.subtotal ?? 0);
+
+    updateStatus(order.status || "Pending");
+}
+
+updateCartCount();
+
+let order = null;
+
+try {
+    order = JSON.parse(localStorage.getItem("amakartLatestOrder"));
+} catch {}
+
+if (
+    !order ||
+    !order.orderId ||
+    !order.customer ||
+    !Array.isArray(order.items)
+) {
+    document.getElementById("noOrder").style.display = "block";
+} else {
+
+    displayOrder(order);
+
+    /*
+      Live status reads from a separate status-only collection.
+      The Firestore document ID must match the order document ID.
+    */
+
+    if (order.firestoreId) {
+
+        const trackingRef = doc(db, "orderTracking", order.firestoreId);
+
+        onSnapshot(trackingRef, snapshot => {
+
+            if (snapshot.exists()) {
+                const tracking = snapshot.data();
+                updateStatus(tracking.status || "Pending");
+            }
+
+        }, error => {
+            console.error("Order tracking error:", error);
+        });
+
+    } else {
+        console.warn("Firestore order ID not found in local order data.");
+    }
+}
+
+</script>
+
+</body>
+</html>

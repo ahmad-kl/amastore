@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jackets | AMAKART</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: #171717;
+            background: #fff;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, input, select {
+            font-family: inherit;
+        }
+
+        /* HEADER */
+
+        header {
+            height: 78px;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 29px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+        .logo span {
+            color: #d68b42;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .cart-link {
+            font-size: 23px;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #d68b42;
+            color: white;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-btn {
+            border: none;
+            background: none;
+            font-size: 27px;
+            cursor: pointer;
+        }
+
+        /* HAMBURGER MENU */
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 199;
+            opacity: 0;
+            visibility: hidden;
+            transition: .3s;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -360px;
+            width: 320px;
+            max-width: 85%;
+            height: 100vh;
+            background: white;
+            z-index: 200;
+            padding: 30px;
+            transition: .35s;
+            overflow-y: auto;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .menu-label {
+            color: #999;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .menu-links {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-links a {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .menu-links a:hover {
+            color: #d68b42;
+            padding-left: 7px;
+        }
+
+        /* PAGE BANNER */
+
+        .page-banner {
+            background: #f7f4ef;
+            padding: 65px 7%;
+        }
+
+        .breadcrumb {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .breadcrumb a:hover {
+            color: #d68b42;
+        }
+
+        .page-banner h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .page-banner p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* PRODUCTS */
+
+        .shop-section {
+            padding: 55px 7% 80px;
+        }
+
+        .shop-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .product-count {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .toolbar-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-box {
+            width: 220px;
+            padding: 11px 13px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .sort-select {
+            padding: 11px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px 22px;
+        }
+
+        .product-card {
+            min-width: 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 330px;
+            background: #f5f3f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .5s;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.06);
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 13px;
+            left: 13px;
+            background: white;
+            padding: 7px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 14px 2px;
+        }
+
+        .product-category {
+            color: #999;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            margin-bottom: 7px;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 9px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .product-price del {
+            color: #aaa;
+            font-size: 12px;
+            margin-left: 7px;
+            font-weight: 400;
+        }
+
+        .no-products {
+            display: none;
+            text-align: center;
+            padding: 60px 10px;
+            color: #888;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #171717;
+            color: white;
+            padding: 45px 7% 25px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            padding-bottom: 35px;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo span {
+            color: #d68b42;
+        }
+
+        .footer-about {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.8;
+            max-width: 350px;
+        }
+
+        .footer-column h3 {
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .footer-column a:hover {
+            color: #d68b42;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            color: #888;
+            font-size: 11px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .product-image {
+                height: 300px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width: 600px) {
+            header {
+                height: 65px;
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .page-banner {
+                padding: 45px 5%;
+            }
+
+            .page-banner h1 {
+                font-size: 38px;
+            }
+
+            .shop-section {
+                padding: 40px 5% 60px;
+            }
+
+            .shop-toolbar {
+                align-items: flex-start;
+            }
+
+            .toolbar-right {
+                width: 100%;
+            }
+
+            .search-box {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .sort-select {
+                max-width: 145px;
+            }
+
+            .product-grid {
+                gap: 22px 12px;
+            }
+
+            .product-image {
+                height: 220px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px 15px;
+            }
+
+            .footer-about-column {
+                grid-column: 1 / -1;
+            }
+
+            footer {
+                padding: 40px 5% 20px;
+            }
+        }
+
+        @media(max-width: 380px) {
+            .product-image {
+                height: 185px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+        <a href="index.html" class="logo">AMA<span>KART</span></a>
+
+        <div class="header-right">
+            <a href="cart.html" class="cart-link">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </header>
+
+    <!-- HAMBURGER MENU -->
+
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+    <nav class="side-menu" id="sideMenu">
+        <div class="menu-top">
+            <h2>AMAKART</h2>
+            <button class="close-btn" onclick="toggleMenu()">×</button>
+        </div>
+
+        <p class="menu-label">SHOP BY CATEGORY</p>
+
+        <div class="menu-links">
+            <a href="tshirt.html">T-Shirts</a>
+            <a href="hoodie.html">Hoodies</a>
+            <a href="jacket.html">Jackets</a>
+            <a href="cap.html">Caps</a>
+            <a href="kids.html">Kids Clothing</a>
+            <a href="frame.html">Acrylic Photo Frames</a>
+        </div>
+    </nav>
+
+    <!-- PAGE BANNER -->
+
+    <section class="page-banner">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> / Jackets
+        </div>
+
+        <h1>Jackets</h1>
+        <p>Explore our collection of stylish jackets for every occasion.</p>
+    </section>
+
+    <!-- PRODUCT LIST -->
+
+    <section class="shop-section">
+
+        <div class="shop-toolbar">
+
+            <p class="product-count" id="productCount">
+                Loading jackets...
+            </p>
+
+            <div class="toolbar-right">
+                <input
+                    type="text"
+                    class="search-box"
+                    id="searchInput"
+                    placeholder="Search Jackets..."
+                >
+
+                <select class="sort-select" id="sortSelect">
+                    <option value="default">Default</option>
+                    <option value="low">Price: Low to High</option>
+                    <option value="high">Price: High to Low</option>
+                    <option value="name">Name: A to Z</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- Firebase jacket products load here -->
+        </div>
+
+        <div class="no-products" id="noProducts">
+            <h3>No products found</h3>
+            <p>Try searching with another name.</p>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-main">
+
+            <div class="footer-about-column">
+                <div class="footer-logo">AMA<span>KART</span></div>
+                <p class="footer-about">
+                    Discover your style with AMAKART. Explore our collection
+                    of clothing, accessories and more.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <h3>QUICK LINKS</h3>
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop All</a>
+                <a href="cart.html">My Cart</a>
+                <a href="orders.html">My Orders</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>HELP & SUPPORT</h3>
+                <a href="contact.html">Contact Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms & Conditions</a>
+                <a href="refund.html">Return & Refund</a>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 AMAKART. All Rights Reserved.
+        </div>
+
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        import {
+            getFirestore,
+            collection,
+            query,
+            where,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCEaA53b9MszdFAl-KoU3_DDJXejIjQ4k",
+            authDomain: "amakart-4a249.firebaseapp.com",
+            projectId: "amakart-4a249",
+            storageBucket: "amakart-4a249.firebasestorage.app",
+            messagingSenderId: "399156555540",
+            appId: "1:399156555540:web:a03bc77ab75402cb52dc01",
+            measurementId: "G-HKTQ1JVF82"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // HAMBURGER MENU
+
+        window.toggleMenu = function () {
+            document.getElementById("sideMenu").classList.toggle("active");
+            document.getElementById("menuOverlay").classList.toggle("active");
+        };
+
+        const searchInput = document.getElementById("searchInput");
+        const sortSelect = document.getElementById("sortSelect");
+        const productGrid = document.getElementById("productGrid");
+        const productCount = document.getElementById("productCount");
+        const noProducts = document.getElementById("noProducts");
+
+        let allProducts = [];
+
+        function formatPrice(price) {
+            return "₹" + Number(price || 0).toLocaleString("en-IN");
+        }
+
+        // DISPLAY PRODUCTS
+
+        function renderProducts() {
+            const searchText = searchInput.value.trim().toLowerCase();
+            const sortValue = sortSelect.value;
+
+            let filtered = allProducts.filter(product => {
+                const name = String(product.name || "").toLowerCase();
+                return name.includes(searchText);
+            });
+
+            // SORT PRODUCTS
+
+            if (sortValue === "low") {
+                filtered.sort((a, b) =>
+                    Number(a.price || 0) - Number(b.price || 0)
+                );
+
+            } else if (sortValue === "high") {
+                filtered.sort((a, b) =>
+                    Number(b.price || 0) - Number(a.price || 0)
+                );
+
+            } else if (sortValue === "name") {
+                filtered.sort((a, b) =>
+                    String(a.name || "").localeCompare(String(b.name || ""))
+                );
+
+            } else {
+                filtered.sort((a, b) => {
+                    const dateA = a.createdAt?.toDate
+                        ? a.createdAt.toDate().getTime()
+                        : new Date(a.createdAt || 0).getTime();
+
+                    const dateB = b.createdAt?.toDate
+                        ? b.createdAt.toDate().getTime()
+                        : new Date(b.createdAt || 0).getTime();
+
+                    return dateB - dateA;
+                });
+            }
+
+            productGrid.innerHTML = "";
+
+            filtered.forEach(product => {
+
+                const card = document.createElement("a");
+
+                card.className = "product-card";
+                card.href = `product.html?id=${encodeURIComponent(product.id)}`;
+                card.dataset.name = product.name || "";
+                card.dataset.price = Number(product.price || 0);
+
+                // IMAGE
+
+                const imageBox = document.createElement("div");
+                imageBox.className = "product-image";
+
+                if (product.tag) {
+                    const tag = document.createElement("span");
+                    tag.className = "product-tag";
+                    tag.textContent = product.tag;
+                    imageBox.appendChild(tag);
+                }
+
+                const img = document.createElement("img");
+                img.src = product.image || "";
+                img.alt = product.name || "Jacket";
+                img.loading = "lazy";
+
+                imageBox.appendChild(img);
+
+                // PRODUCT INFO
+
+                const info = document.createElement("div");
+                info.className = "product-info";
+
+                const category = document.createElement("p");
+                category.className = "product-category";
+                category.textContent = "JACKETS";
+
+                const name = document.createElement("h3");
+                name.className = "product-name";
+                name.textContent = product.name || "Untitled Product";
+
+                const price = document.createElement("p");
+                price.className = "product-price";
+                price.textContent = formatPrice(product.price);
+
+                const oldPrice = product.originalPrice ?? product.oldPrice;
+
+                if (oldPrice && Number(oldPrice) > Number(product.price || 0)) {
+                    const del = document.createElement("del");
+                    del.textContent = formatPrice(oldPrice);
+                    price.appendChild(del);
+                }
+
+                info.append(category, name, price);
+
+                card.append(imageBox, info);
+
+                productGrid.appendChild(card);
+            });
+
+            productCount.textContent =
+                "Showing " + filtered.length + " products";
+
+            noProducts.style.display =
+                filtered.length === 0 ? "block" : "none";
+        }
+
+        // LOAD JACKETS FROM FIREBASE
+
+        async function loadJackets() {
+            productCount.textContent = "Loading jackets...";
+            noProducts.style.display = "none";
+
+            try {
+                const jacketsQuery = query(
+                    collection(db, "products"),
+                    where("category", "==", "jacket")
+                );
+
+                const snapshot = await getDocs(jacketsQuery);
+
+                allProducts = snapshot.docs
+                    .map(docSnap => ({
+                        id: docSnap.id,
+                        ...docSnap.data()
+                    }))
+                    .filter(product => product.active !== false);
+
+                renderProducts();
+
+            } catch (error) {
+                console.error("Error loading jackets:", error);
+
+                productCount.textContent = "Unable to load products";
+
+                noProducts.style.display = "block";
+
+                noProducts.querySelector("h3").textContent =
+                    "Something went wrong";
+
+                noProducts.querySelector("p").textContent =
+                    "Please refresh the page or try again later.";
+            }
+        }
+
+        // SEARCH AND SORT
+
+        searchInput.addEventListener("input", renderProducts);
+        sortSelect.addEventListener("change", renderProducts);
+
+        // CART COUNT
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem("amakartCart")) || [];
+
+            const totalItems = cart.reduce((total, item) => {
+                return total + Number(item.quantity || 1);
+            }, 0);
+
+            document.getElementById("cartCount").textContent = totalItems;
+        }
+
+        updateCartCount();
+
+        // INITIALIZE
+
+        loadJackets();
+
+    </script>
+
+</body>
+</html>

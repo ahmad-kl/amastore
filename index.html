@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AMAKART | Online Shopping</title>
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+
+
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+
+        body {
+
+            font-family: 'DM Sans', sans-serif;
+
+            color: #171717;
+
+            background: #fff;
+
+        }
+
+
+
+        a { text-decoration: none; color: inherit; }
+
+        button { font-family: inherit; cursor: pointer; }
+
+
+
+        /* HEADER */
+
+        header {
+
+            width: 100%;
+
+            height: 78px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            background: #fff;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+            border-bottom: 1px solid #eeeeee;
+
+        }
+
+
+
+        .logo {
+
+            font-size: 29px;
+
+            font-weight: 800;
+
+            letter-spacing: -1.5px;
+
+        }
+
+
+
+        .logo span { color: #d68b42; }
+
+
+
+        .header-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+
+        }
+
+
+
+        .cart-link { font-size: 23px; position: relative; }
+
+
+
+        .cart-count {
+
+            position: absolute;
+
+            top: -8px;
+
+            right: -10px;
+
+            background: #d68b42;
+
+            color: white;
+
+            width: 17px;
+
+            height: 17px;
+
+            border-radius: 50%;
+
+            font-size: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+
+        .menu-btn {
+
+            border: none;
+
+            background: none;
+
+            font-size: 27px;
+
+            color: #171717;
+
+        }
+
+
+
+        /* SIDE MENU */
+
+        .menu-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,.45);
+
+            z-index: 199;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition: .3s;
+
+        }
+
+
+
+        .menu-overlay.active {
+
+            opacity: 1;
+
+            visibility: visible;
+
+        }
+
+
+
+        .side-menu {
+
+            position: fixed;
+
+            top: 0;
+
+            right: -360px;
+
+            width: 320px;
+
+            max-width: 85%;
+
+            height: 100vh;
+
+            background: #fff;
+
+            z-index: 200;
+
+            padding: 30px;
+
+            transition: .35s ease;
+
+            overflow-y: auto;
+
+        }
+
+
+
+        .side-menu.active { right: 0; }
+
+
+
+        .menu-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 35px;
+
+        }
+
+
+
+        .menu-top h2 { font-size: 22px; }
+
+
+
+        .close-btn {
+
+            border: none;
+
+            background: none;
+
+            font-size: 28px;
+
+        }
+
+
+
+        .menu-label {
+
+            color: #999;
+
+            font-size: 11px;
+
+            letter-spacing: 2px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+
+        }
+
+
+
+        .menu-links {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+
+        .menu-links a {
+
+            padding: 15px 0;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            transition: .2s;
+
+        }
+
+
+
+        .menu-links a:hover {
+
+            color: #d68b42;
+
+            padding-left: 7px;
+
+        }
+
+
+
+        /* HERO SLIDESHOW */
+
+        .hero {
+
+            width: 100%;
+
+            height: 590px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background: #222;
+
+        }
+
+
+
+        .hero-slide {
+
+            position: absolute;
+
+            inset: 0;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition: opacity 1.4s ease, visibility 1.4s;
+
+            background-size: cover;
+
+            background-position: center;
+
+        }
+
+
+
+        .hero-slide.active {
+
+            opacity: 1;
+
+            visibility: visible;
+
+        }
+
+
+
+        .hero-slide::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background: linear-gradient(90deg, rgba(0,0,0,.65), rgba(0,0,0,.12));
+
+        }
+
+
+
+        .hero-content {
+
+            position: absolute;
+
+            z-index: 2;
+
+            top: 50%;
+
+            left: 10%;
+
+            transform: translateY(-50%);
+
+            color: #fff;
+
+            max-width: 540px;
+
+        }
+
+
+
+        .hero-content p {
+
+            font-size: 12px;
+
+            letter-spacing: 4px;
+
+            margin-bottom: 20px;
+
+            font-weight: 700;
+
+        }
+
+
+
+        .hero-content h1 {
+
+            font-family: 'Playfair Display', serif;
+
+            font-size: clamp(42px, 6vw, 72px);
+
+            line-height: 1.1;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        .hero-content a {
+
+            display: inline-block;
+
+            background: #d68b42;
+
+            color: white;
+
+            padding: 15px 27px;
+
+            font-size: 12px;
+
+            letter-spacing: 1.5px;
+
+            font-weight: 700;
+
+            transition: .3s;
+
+        }
+
+
+
+        .hero-content a:hover {
+
+            background: #fff;
+
+            color: #171717;
+
+        }
+
+
+
+        .slide-dots {
+
+            position: absolute;
+
+            bottom: 28px;
+
+            left: 10%;
+
+            z-index: 5;
+
+            display: flex;
+
+            gap: 9px;
+
+        }
+
+
+
+        .slide-dot {
+
+            width: 25px;
+
+            height: 4px;
+
+            background: rgba(255,255,255,.5);
+
+            border: none;
+
+            transition: .3s;
+
+        }
+
+
+
+        .slide-dot.active {
+
+            background: #d68b42;
+
+            width: 42px;
+
+        }
+
+
+
+        /* PRODUCT SECTIONS */
+
+        .product-section { padding: 75px 7%; }
+
+
+
+        .section-heading {
+
+            display: flex;
+
+            align-items: end;
+
+            justify-content: space-between;
+
+            margin-bottom: 35px;
+
+        }
+
+
+
+        .section-heading p {
+
+            color: #d68b42;
+
+            font-size: 11px;
+
+            letter-spacing: 3px;
+
+            font-weight: 700;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .section-heading h2 {
+
+            font-family: 'Playfair Display', serif;
+
+            font-size: 36px;
+
+        }
+
+
+
+        .view-all {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            border-bottom: 1px solid #171717;
+
+            padding-bottom: 6px;
+
+            transition: .2s;
+
+        }
+
+
+
+        .view-all:hover {
+
+            color: #d68b42;
+
+            border-color: #d68b42;
+
+        }
+
+
+
+        .product-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 22px;
+
+        }
+
+
+
+        .product-card { min-width: 0; }
+
+
+
+        .product-image {
+
+            width: 100%;
+
+            height: 330px;
+
+            background: #f5f3f0;
+
+            overflow: hidden;
+
+            position: relative;
+
+        }
+
+
+
+        .product-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform .5s ease;
+
+        }
+
+
+
+        .product-card:hover .product-image img {
+
+            transform: scale(1.06);
+
+        }
+
+
+
+        .product-tag {
+
+            position: absolute;
+
+            top: 13px;
+
+            left: 13px;
+
+            background: #fff;
+
+            color: #171717;
+
+            padding: 7px 11px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: .5px;
+
+            z-index: 2;
+
+        }
+
+
+
+        .product-info { padding: 15px 2px; }
+
+
+
+        .product-category {
+
+            font-size: 10px;
+
+            color: #999;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 7px;
+
+        }
+
+
+
+        .product-name {
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            margin-bottom: 9px;
+
+        }
+
+
+
+        .product-price {
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+        }
+
+
+
+        .product-price del {
+
+            color: #aaa;
+
+            font-size: 12px;
+
+            font-weight: 400;
+
+            margin-left: 7px;
+
+        }
+
+
+
+        .product-message {
+
+            color: #888;
+
+            font-size: 14px;
+
+            padding: 20px 0;
+
+            grid-column: 1 / -1;
+
+        }
+
+
+
+        /* SECTION DIVIDER */
+
+        .section-divider {
+
+            height: 1px;
+
+            background: #eee;
+
+            margin: 0 7%;
+
+        }
+
+
+
+        /* OFFER BANNER */
+
+        .offer-section { padding: 30px 7% 85px; }
+
+
+
+        .offer-banner {
+
+            width: 100%;
+
+            height: 400px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background: #333;
+
+        }
+
+
+
+        .offer-banner img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+
+
+        .offer-banner::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background: linear-gradient(90deg, rgba(0,0,0,.7), rgba(0,0,0,.05));
+
+        }
+
+
+
+        .offer-content {
+
+            position: absolute;
+
+            z-index: 2;
+
+            top: 50%;
+
+            left: 8%;
+
+            transform: translateY(-50%);
+
+            color: #fff;
+
+            max-width: 450px;
+
+        }
+
+
+
+        .offer-content p {
+
+            color: #e9b77d;
+
+            letter-spacing: 3px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+
+        }
+
+
+
+        .offer-content h2 {
+
+            font-family: 'Playfair Display', serif;
+
+            font-size: clamp(35px, 5vw, 58px);
+
+            line-height: 1.1;
+
+            margin-bottom: 22px;
+
+        }
+
+
+
+        .offer-content a {
+
+            display: inline-block;
+
+            background: #d68b42;
+
+            color: #fff;
+
+            padding: 14px 25px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+        }
+
+
+
+        .offer-content a:hover {
+
+            background: #fff;
+
+            color: #171717;
+
+        }
+
+
+
+        /* FOOTER */
+
+        footer {
+
+            background: #171717;
+
+            color: #fff;
+
+            padding: 55px 7% 25px;
+
+        }
+
+
+
+        .footer-main {
+
+            display: grid;
+
+            grid-template-columns: 2fr 1fr 1fr;
+
+            gap: 50px;
+
+            padding-bottom: 45px;
+
+        }
+
+
+
+        .footer-logo {
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+
+        .footer-logo span { color: #d68b42; }
+
+
+
+        .footer-about {
+
+            max-width: 350px;
+
+            color: #aaa;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+        }
+
+
+
+        .footer-column h3 {
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .footer-column a {
+
+            display: block;
+
+            color: #aaa;
+
+            font-size: 13px;
+
+            margin-bottom: 13px;
+
+            transition: .2s;
+
+        }
+
+
+
+        .footer-column a:hover { color: #d68b42; }
+
+
+
+        .footer-bottom {
+
+            border-top: 1px solid #333;
+
+            padding-top: 22px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            color: #888;
+
+            font-size: 11px;
+
+        }
+
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .product-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+
+                gap: 25px 15px;
+
+            }
+
+
+
+            .product-image { height: 300px; }
+
+            .hero { height: 500px; }
+
+
+
+            .footer-main { grid-template-columns: 1fr 1fr; }
+
+            .footer-about-column { grid-column: 1 / -1; }
+
+        }
+
+
+
+        @media (max-width: 600px) {
+
+            header { height: 65px; padding: 0 5%; }
+
+            .logo { font-size: 25px; }
+
+            .header-right { gap: 20px; }
+
+
+
+            .hero { height: 480px; }
+
+            .hero-content { left: 7%; right: 7%; }
+
+            .hero-content h1 { font-size: 43px; }
+
+            .slide-dots { left: 7%; }
+
+
+
+            .product-section { padding: 55px 5%; }
+
+            .section-heading h2 { font-size: 27px; }
+
+            .section-heading { margin-bottom: 25px; }
+
+
+
+            .product-grid { gap: 22px 12px; }
+
+            .product-image { height: 220px; }
+
+            .product-name { font-size: 13px; }
+
+            .product-price { font-size: 13px; }
+
+
+
+            .offer-section { padding: 15px 5% 60px; }
+
+            .offer-banner { height: 330px; }
+
+            .offer-content { left: 7%; right: 7%; }
+
+
+
+            .footer-main {
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 30px 20px;
+
+            }
+
+
+
+            .footer-about-column { grid-column: 1 / -1; }
+
+            footer { padding: 45px 5% 20px; }
+
+            .footer-bottom { flex-direction: column; }
+
+        }
+
+
+
+        @media (max-width: 380px) {
+
+            .product-image { height: 185px; }
+
+            .section-heading h2 { font-size: 24px; }
+
+            .view-all { font-size: 10px; }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <a href="index.html" class="logo">AMA<span>KART</span></a>
+
+
+
+        <div class="header-right">
+
+            <a href="cart.html" class="cart-link" aria-label="Shopping cart">
+
+                🛒
+
+                <span class="cart-count" id="cartCount">0</span>
+
+            </a>
+
+
+
+            <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">
+
+                ☰
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- HAMBURGER MENU -->
+
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+
+
+    <nav class="side-menu" id="sideMenu">
+
+        <div class="menu-top">
+
+            <h2>AMAKART</h2>
+
+            <button class="close-btn" onclick="toggleMenu()" aria-label="Close menu">×</button>
+
+        </div>
+
+
+
+        <p class="menu-label">SHOP BY CATEGORY</p>
+
+
+
+        <div class="menu-links">
+
+            <a href="tshirt.html">T-Shirts</a>
+
+            <a href="hoodie.html">Hoodies</a>
+
+            <a href="jacket.html">Jackets</a>
+
+            <a href="cap.html">Caps</a>
+
+            <a href="kids.html">Kids Clothing</a>
+
+            <a href="frame.html">Acrylic Photo Frames</a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- HERO SLIDESHOW -->
+
+    <section class="hero">
+
+        <div id="heroSlidesContainer">
+
+            <div class="hero-slide active" style="background-image:url('https://res.cloudinary.com/dsfycdl5o/image/upload/v1795511607/Malayalam_Streetwear_Portrait_kvu5l2.png')"></div>
+
+            <div class="hero-slide" style="background-image:url('https://res.cloudinary.com/dsfycdl5o/image/upload/v1795511607/Confident_Portrait_in_Graphic_Hoodie_ujlyvf.png')"></div>
+
+            <div class="hero-slide" style="background-image:url('https://res.cloudinary.com/dsfycdl5o/image/upload/v1795511789/Embroidered_Safar_Brown_Baseball_Cap_qe54dl.png')"></div>
+
+            <div class="hero-slide" style="background-image:url('https://res.cloudinary.com/dsfycdl5o/image/upload/v1795512093/Kerala_Backwaters_Graphic_T-Shirt_x7c5b1.png')"></div>
+
+        </div>
+
+
+
+        <div class="hero-content">
+
+            <p id="heroSubtitle">WELCOME TO AMAKART</p>
+
+            <h1 id="heroTitle">Style That<br>Defines You.</h1>
+
+            <a href="tshirt.html" id="heroButton">EXPLORE OUR COLLECTION →</a>
+
+        </div>
+
+
+
+        <div class="slide-dots">
+
+            <button class="slide-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+
+            <button class="slide-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
+
+            <button class="slide-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+
+            <button class="slide-dot" onclick="goToSlide(3)" aria-label="Slide 4"></button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- NEW PRODUCTS: FIRESTORE -->
+
+    <section class="product-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p>JUST ARRIVED</p>
+
+                <h2>New Products</h2>
+
+            </div>
+
+            <a href="tshirt.html" class="view-all">VIEW ALL →</a>
+
+        </div>
+
+
+
+        <div class="product-grid" id="newProductsGrid">
+
+            <p class="product-message">Loading products...</p>
+
+        </div>
+
+    </section>
+
+
+
+    <div class="section-divider"></div>
+
+
+
+    <!-- MORE PRODUCTS: FIRESTORE -->
+
+    <section class="product-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p>EXPLORE OUR COLLECTION</p>
+
+                <h2>More Products</h2>
+
+            </div>
+
+            <a href="tshirt.html" class="view-all">VIEW ALL →</a>
+
+        </div>
+
+
+
+        <div class="product-grid" id="bestSellersGrid">
+
+            <p class="product-message">Loading products...</p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SPECIAL OFFER -->
+
+    <section class="offer-section" id="offerSection">
+
+        <div class="offer-banner">
+
+            <img id="offerImage" src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1800&q=85" alt="AMAKART special fashion offer">
+
+
+
+            <div class="offer-content">
+
+                <p id="offerSubtitle">LIMITED TIME OFFER</p>
+
+                <h2 id="offerTitle">Upgrade Your<br>Everyday Style.</h2>
+
+                <a href="tshirt.html" id="offerButton">SHOP NOW →</a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-main">
+
+            <div class="footer-about-column">
+
+                <div class="footer-logo">AMA<span>KART</span></div>
+
+                <p class="footer-about">
+
+                    Discover your style with AMAKART. Explore our collection
+
+                    of clothing, accessories and more.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3>QUICK LINKS</h3>
+
+                <a href="index.html">Home</a>
+
+                <a href="tshirt.html">Shop All</a>
+
+                <a href="cart.html">My Cart</a>
+
+                <a href="orders.html">My Orders</a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3>HELP & SUPPORT</h3>
+                <a href="refund.html">Return & Refund</a>
+            </div>
+
+        </div>
+
+
+
+        <div class="footer-bottom">
+
+            <p>© 2026 AMAKART. All Rights Reserved.</p>
+
+            <p>Designed with care by AMAKART.</p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+
+
+        import {
+
+            getFirestore,
+
+            doc,
+
+            getDoc,
+
+            collection,
+
+            getDocs
+
+        } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+
+
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyCE6aA53b9MszdFAl-KoU3_DDJXejIjQ4k",
+
+            authDomain: "amakart-4a249.firebaseapp.com",
+
+            projectId: "amakart-4a249",
+
+            storageBucket: "amakart-4a249.firebasestorage.app",
+
+            messagingSenderId: "399156555540",
+
+            appId: "1:399156555540:web:a03bc77ab75402cb52dc01",
+
+            measurementId: "G-HKTQ1JVF82"
+
+        };
+
+
+
+        const app = initializeApp(firebaseConfig);
+
+        const db = getFirestore(app);
+
+
+
+        // DEFAULT HERO SLIDES
+
+        const defaultSlides = [
+            {
+                image: "https://res.cloudinary.com/dsfycdl5o/image/upload/v1795511607/Malayalam_Streetwear_Portrait_kvu5l2.png",
+                subtitle: "WELCOME TO AMAKART",
+                title: "Style That<br>Defines You.",
+                buttonText: "EXPLORE OUR COLLECTION →",
+                buttonLink: "tshirt.html"
+            },
+            {
+                image: "https://res.cloudinary.com/dsfycdl5o/image/upload/v1795511607/Confident_Portrait_in_Graphic_Hoodie_ujlyvf.png",
+                subtitle: "NEW COLLECTION",
+                title: "Discover Your<br>Everyday Style.",
+                buttonText: "SHOP NOW →",
+                buttonLink: "hoodie.html"
+            },
+            {
+                image: "https://res.cloudinary.com/dsfycdl5o/image/upload/v1795511789/Embroidered_Safar_Brown_Baseball_Cap_qe54dl.png",
+                subtitle: "ACCESSORIES THAT DEFINE YOU",
+                title: "Complete Your<br>Look.",
+                buttonText: "SHOP CAPS →",
+                buttonLink: "cap.html"
+            },
+            {
+                image: "https://res.cloudinary.com/dsfycdl5o/image/upload/v1795512093/Kerala_Backwaters_Graphic_T-Shirt_x7c5b1.png",
+                subtitle: "INSPIRED BY KERALA",
+                title: "Wear Your<br>Roots.",
+                buttonText: "EXPLORE NOW →",
+                buttonLink: "tshirt.html"
+            }
+        ];
+
+        // DEFAULT OFFER
+
+        const defaultOffer = {
+
+            enabled: true,
+
+            image: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1800&q=85",
+
+            subtitle: "LIMITED TIME OFFER",
+
+            title: "Upgrade Your<br>Everyday Style.",
+
+            buttonText: "SHOP NOW →",
+
+            buttonLink: "tshirt.html"
+
+        };
+
+
+
+        let slidesData = defaultSlides;
+
+        let currentSlide = 0;
+
+        let slideInterval = null;
+
+
+
+        // HAMBURGER MENU
+
+        window.toggleMenu = function () {
+
+            document.getElementById("sideMenu").classList.toggle("active");
+
+            document.getElementById("menuOverlay").classList.toggle("active");
+
+        };
+
+
+
+        // SAFE LINK
+
+        function safeUrl(value, fallback) {
+            const url = String(value || "").trim();
+            if (!url) return fallback;
+            if (/^(https?:\/\/|\/|[a-zA-Z0-9_-]+\.html(?:\?.*)?)$/i.test(url)) return url;
+            return fallback;
+        }
+
+
+
+        // RENDER HERO SLIDES
+
+        function renderSlides(slides) {
+
+            const validSlides = Array.isArray(slides)
+
+                ? slides.filter(slide => slide && slide.image)
+
+                : [];
+
+
+
+            slidesData = validSlides.length ? validSlides : defaultSlides;
+
+
+
+            const container = document.getElementById("heroSlidesContainer");
+
+            const dotsContainer = document.querySelector(".slide-dots");
+
+
+
+            container.innerHTML = slidesData.map((slide, index) => `
+
+                <div class="hero-slide ${index === 0 ? "active" : ""}"
+
+                     style="background-image:url('${String(slide.image).replace(/['()]/g, "")}')"></div>
+
+            `).join("");
+
+
+
+            dotsContainer.innerHTML = slidesData.map((slide, index) => `
+
+                <button class="slide-dot ${index === 0 ? "active" : ""}"
+
+                        data-slide-index="${index}"
+
+                        aria-label="Slide ${index + 1}"></button>
+
+            `).join("");
+
+
+
+            dotsContainer.querySelectorAll(".slide-dot").forEach(dot => {
+
+                dot.addEventListener("click", () => {
+
+                    goToSlide(Number(dot.dataset.slideIndex));
+
+                });
+
+            });
+
+
+
+            currentSlide = 0;
+
+            updateHeroText();
+
+            startSlideshow();
+
+        }
+
+
+
+        // UPDATE HERO TEXT
+
+        function updateHeroText() {
+
+            const slide = slidesData[currentSlide];
+
+
+
+            document.getElementById("heroTitle").innerHTML = slide.title || "";
+
+            document.getElementById("heroSubtitle").textContent = slide.subtitle || "";
+
+
+
+            const button = document.getElementById("heroButton");
+
+
+
+            button.textContent = slide.buttonText || "SHOP NOW →";
+
+            button.href = safeUrl(slide.buttonLink, "tshirt.html");
+
+
+
+            document.querySelectorAll(".hero-slide").forEach((item, index) => {
+
+                item.classList.toggle("active", index === currentSlide);
+
+            });
+
+
+
+            document.querySelectorAll(".slide-dot").forEach((item, index) => {
+
+                item.classList.toggle("active", index === currentSlide);
+
+            });
+
+        }
+
+
+
+        function showSlide(index) {
+
+            if (!slidesData.length) return;
+
+
+
+            currentSlide = (index + slidesData.length) % slidesData.length;
+
+            updateHeroText();
+
+        }
+
+
+
+        function nextSlide() {
+
+            showSlide(currentSlide + 1);
+
+        }
+
+
+
+        function goToSlide(index) {
+
+            showSlide(index);
+
+            startSlideshow();
+
+        }
+
+
+
+        window.goToSlide = goToSlide;
+
+
+
+        function startSlideshow() {
+
+            if (slideInterval) clearInterval(slideInterval);
+
+
+
+            if (slidesData.length > 1) {
+
+                slideInterval = setInterval(nextSlide, 4500);
+
+            }
+
+        }
+
+
+
+        // RENDER OFFER
+
+        function renderOffer(offer) {
+
+            const section = document.getElementById("offerSection");
+
+
+
+            if (!offer || offer.enabled === false) {
+
+                section.style.display = "none";
+
+                return;
+
+            }
+
+
+
+            section.style.display = "";
+
+
+
+            document.getElementById("offerImage").src =
+
+                offer.image || defaultOffer.image;
+
+
+
+            document.getElementById("offerSubtitle").textContent =
+
+                offer.subtitle || defaultOffer.subtitle;
+
+
+
+            document.getElementById("offerTitle").innerHTML =
+
+                offer.title || defaultOffer.title;
+
+
+
+            const button = document.getElementById("offerButton");
+
+
+
+            button.textContent = offer.buttonText || defaultOffer.buttonText;
+
+            button.href = safeUrl(offer.buttonLink, "tshirt.html");
+
+        }
+
+
+
+        // LOAD HOMEPAGE SETTINGS FROM FIRESTORE
+        // Admin Panel saves editable slides in siteContent/homepage -> slides.
+
+        async function loadHomepageSettings() {
+
+            try {
+
+                const snapshot = await getDoc(doc(db, "siteContent", "homepage"));
+
+
+
+                if (snapshot.exists()) {
+
+                    const data = snapshot.data();
+
+
+
+                    renderSlides(data.slides || defaultSlides);
+
+                    renderOffer(data.offer || defaultOffer);
+
+                } else {
+
+                    renderSlides(defaultSlides);
+
+                    renderOffer(defaultOffer);
+
+                }
+
+            } catch (error) {
+
+                console.warn(
+
+                    "Could not load homepage settings from Firestore. Showing default content.",
+
+                    error
+
+                );
+
+
+
+                renderSlides(defaultSlides);
+
+                renderOffer(defaultOffer);
+
+            }
+
+        }
+
+
+
+        // CREATE PRODUCT CARD
+
+        function createProductCard(product) {
+
+            const card = document.createElement("a");
+
+
+
+            card.href = `product.html?id=${encodeURIComponent(product.id)}`;
+
+            card.className = "product-card";
+
+
+
+            const imageBox = document.createElement("div");
+
+            imageBox.className = "product-image";
+
+
+
+            if (product.tag) {
+
+                const tag = document.createElement("span");
+
+                tag.className = "product-tag";
+
+                tag.textContent = product.tag;
+
+                imageBox.appendChild(tag);
+
+            }
+
+
+
+            const image = document.createElement("img");
+
+            image.src = product.image || "";
+
+            image.alt = product.name || "AMAKART Product";
+
+            image.loading = "lazy";
+
+
+
+            imageBox.appendChild(image);
+
+
+
+            const info = document.createElement("div");
+
+            info.className = "product-info";
+
+
+
+            const category = document.createElement("p");
+
+            category.className = "product-category";
+
+            category.textContent = product.category || "AMAKART";
+
+
+
+            const name = document.createElement("h3");
+
+            name.className = "product-name";
+
+            name.textContent = product.name || "Product";
+
+
+
+            const price = document.createElement("p");
+
+            price.className = "product-price";
+
+
+
+            price.textContent =
+
+                "₹" + Number(product.price || 0).toLocaleString("en-IN");
+
+
+
+            info.append(category, name, price);
+
+            card.append(imageBox, info);
+
+
+
+            return card;
+
+        }
+
+
+
+        // LOAD PRODUCTS FROM FIRESTORE
+
+        async function loadHomepageProducts() {
+
+            const newGrid = document.getElementById("newProductsGrid");
+
+            const moreGrid = document.getElementById("bestSellersGrid");
+
+
+
+            try {
+
+                const snapshot = await getDocs(collection(db, "products"));
+
+
+
+                let products = snapshot.docs.map(productDoc => ({
+
+                    id: productDoc.id,
+
+                    ...productDoc.data()
+
+                }));
+
+
+
+                // Only active products
+
+                products = products.filter(product => product.active !== false);
+
+
+
+                // Latest products first
+
+                products.sort((a, b) => {
+
+                    const dateA = a.createdAt && typeof a.createdAt.toDate === "function"
+
+                        ? a.createdAt.toDate().getTime()
+
+                        : 0;
+
+
+
+                    const dateB = b.createdAt && typeof b.createdAt.toDate === "function"
+
+                        ? b.createdAt.toDate().getTime()
+
+                        : 0;
+
+
+
+                    return dateB - dateA;
+
+                });
+
+
+
+                newGrid.innerHTML = "";
+
+                moreGrid.innerHTML = "";
+
+
+
+                if (products.length === 0) {
+
+                    newGrid.innerHTML =
+
+                        '<p class="product-message">No products available.</p>';
+
+
+
+                    moreGrid.innerHTML =
+
+                        '<p class="product-message">No products available.</p>';
+
+
+
+                    return;
+
+                }
+
+
+
+                // Latest four products
+
+                products.slice(0, 4).forEach(product => {
+
+                    newGrid.appendChild(createProductCard(product));
+
+                });
+
+
+
+                // Next four products
+
+                const moreProducts = products.slice(4, 8);
+
+
+
+                if (moreProducts.length > 0) {
+
+                    moreProducts.forEach(product => {
+
+                        moreGrid.appendChild(createProductCard(product));
+
+                    });
+
+                } else {
+
+                    moreGrid.innerHTML =
+
+                        '<p class="product-message">More products coming soon.</p>';
+
+                }
+
+
+
+            } catch (error) {
+
+                console.error("Homepage products error:", error);
+
+
+
+                newGrid.innerHTML =
+
+                    '<p class="product-message">Unable to load products. Please check Firestore access.</p>';
+
+
+
+                moreGrid.innerHTML =
+
+                    '<p class="product-message">Unable to load products. Please check Firestore access.</p>';
+
+            }
+
+        }
+
+
+
+        // CART COUNT
+
+        function updateCartCount() {
+
+            const cart = JSON.parse(localStorage.getItem("amakartCart")) || [];
+
+
+
+            const totalItems = cart.reduce((total, item) => {
+
+                return total + Number(item.quantity || 1);
+
+            }, 0);
+
+
+
+            document.getElementById("cartCount").textContent = totalItems;
+
+        }
+
+
+
+        // INITIALIZE PAGE
+
+        renderSlides(defaultSlides);
+
+        renderOffer(defaultOffer);
+
+        updateCartCount();
+
+
+
+        loadHomepageSettings();
+
+        loadHomepageProducts();
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
